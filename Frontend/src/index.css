@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-gray-background: #f6f7f9;
+  /* Main Colors */
+  --color-background: #f6f7f9;
+  --color-foreground: #24262d;
+
+  --color-card: #ffffff;
+  --color-card-foreground: #24262d;
+
+  --color-popover: #ffffff;
+  --color-popover-foreground: #24262d;
+
+  --color-primary: #3b82f6;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #f0f2f6;
+  --color-secondary-foreground: #24262d;
+
+  --color-muted: #f0f2f6;
+  --color-muted-foreground: #757b8c;
+
+  --color-accent: #e1f0ff;
+  --color-accent-foreground: #3b82f6;
+
+  --color-destructive: #e53935;
+  --color-destructive-foreground: #ffffff;
+
+  --color-success: #2ecc71;
+  --color-success-foreground: #ffffff;
+
+  --color-warning: #f1c40f;
+  --color-warning-foreground: #ffffff;
+
+  --color-border: #e6e8f0;
+  --color-input: #e6e8f0;
+  --color-ring: #3b82f6;
+
+  --color-radius: 0.75rem;
+
+  /* Sidebar Colors */
+  --sidebar-background: #ffffff;
+  --sidebar-foreground: #24262d;
+
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #ffffff;
+
+  --sidebar-accent: #e1f0ff;
+  --sidebar-accent-foreground: #3b82f6;
+
+  --sidebar-border: #e6e8f0;
+  --sidebar-ring: #3b82f6;
+  --sidebar-muted: #757b8c;
+}
