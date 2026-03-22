@@ -8,15 +8,17 @@ import HigherOfficeDashboard from "./Pages/Higher Office/HigherOfficeDashboard";
 import FaculityDashboard from "./Pages/Faculity/FaculityDashboard";
 import ChairDashboard from "./Pages/Chairs/ChairDashboard";
 import StaffDashboard from "./Pages/Staff/StaffDashboard";
+import SignIn from "./Pages/Authentication/LoginPage";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="h-screen flex flex-col overflow-hidde">
         <Navbar />
-        <div className="flex-1 flex  min-h-0 bg-yellow-200">
+        <div className="flex-1 flex  min-h-0 bg-red-600">
           <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/signin" element={<SignIn />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/Strategic" element={<StrategicDashboard />} />
             <Route path="/Vp" element={<VicePresidentDashboard />} />
