@@ -1,7 +1,16 @@
 import { Search, Home, Bell, Moon } from "lucide-react";
+import { Link } from "react-router-dom";
+
+import { Layers } from "lucide-react";
+
+const user = {
+  isAuthenticated: false,
+};
+
+const navLinks = ["About", "Features", "Benefits", "Contact"];
 
 const Navbar = () => {
-  return (
+  return user.isAuthenticated ? (
     <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 shrink-0 w-full">
       <div className="flex items-center gap-4">
         <button className="p-2 rounded-lg hover:bg-secondary transition-colors active:scale-[0.97]">
@@ -44,6 +53,41 @@ const Navbar = () => {
         </div>
       </div>
     </header>
+  ) : (
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/60">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 h-16">
+        <Link to="/" className="flex items-center gap-2.5 group">
+          <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shadow-md shadow-primary/20 transition-transform group-hover:scale-105 group-active:scale-95">
+            <Layers className="w-5 h-5 text-primary-foreground" />
+          </div>
+          <span className="font-bold text-foreground text-base tracking-tight">
+            AMU KPI System
+          </span>
+        </Link>
+
+        <div className="hidden md:flex items-center gap-1">
+          {navLinks.map((link) => (
+            <a
+              key={link}
+              href={`#${link.toLowerCase()}`}
+              className="px-3.5 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-accent/50"
+            >
+              {link}
+            </a>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2.5">
+          {/* Navbar Buttons as normal buttons */}
+          <button className="hidden sm:inline-flex px-3 py-2 text-sm rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors">
+            <a href="#about">Learn More</a>
+          </button>
+          <button className="px-3 py-2 text-sm rounded-md bg-primary text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/90 transition-colors">
+            <Link to="/signin">Sign In</Link>
+          </button>
+        </div>
+      </div>
+    </nav>
   );
 };
 
