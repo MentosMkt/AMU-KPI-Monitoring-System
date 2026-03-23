@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   BarChart3,
   Target,
@@ -9,11 +9,20 @@ import {
   ArrowRight,
   CheckCircle2,
   ChevronRight,
+  Layers,
   Zap,
   Globe,
+  Mail,
+  MapPin,
+  Phone,
+  GraduationCap,
+  Eye,
+  Lightbulb,
+  Send,
 } from "lucide-react";
 
 import kpiImage from "../../assets/images/kpi.jpeg";
+import { useEffect } from "react";
 
 const features = [
   {
@@ -55,6 +64,18 @@ const stats = [
 ];
 
 const Landing = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      console.log(location.hash);
+      const el = document.querySelector(location.hash);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
+
   return (
     <div className="flex-1 bg-background overflow-x-hidden w-full">
       {/* Hero */}
@@ -161,6 +182,105 @@ const Landing = () => {
                 </div>
               </div>
               <div className="absolute -z-10 -top-4 -right-4 w-full h-full rounded-2xl bg-primary/5 border border-primary/10" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About */}
+      <section id="about" className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-medium border border-primary/10">
+                <GraduationCap className="w-3.5 h-3.5" />
+                About the System
+              </div>
+              <h2 className="text-3xl font-bold text-foreground tracking-tight leading-[1.15]">
+                Built for Arba Minch University's pursuit of academic excellence
+              </h2>
+              <p className="text-muted-foreground leading-relaxed">
+                The KPI Management System was developed to address the growing
+                need for data-driven decision-making in higher education. By
+                centralizing performance metrics across all university sectors,
+                we enable leadership to identify strengths, address gaps, and
+                allocate resources where they matter most.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4 pt-2">
+                {[
+                  {
+                    icon: Eye,
+                    title: "Our Vision",
+                    desc: "To be the leading digitally-managed university in Ethiopia by 2030.",
+                  },
+                  {
+                    icon: Lightbulb,
+                    title: "Our Mission",
+                    desc: "Empower every sector with transparent, measurable performance insights.",
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.title}
+                    className="p-5 rounded-xl bg-card border border-border/60 space-y-2 hover:shadow-md hover:border-primary/20 transition-all duration-300"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-primary">
+                      <item.icon className="w-5 h-5" />
+                    </div>
+                    <h4 className="font-semibold text-foreground text-sm">
+                      {item.title}
+                    </h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="relative">
+              <div className="bg-card rounded-2xl border border-border/60 shadow-xl p-8 space-y-6">
+                <h3 className="font-semibold text-foreground text-lg">
+                  Key Milestones
+                </h3>
+                <div className="space-y-4">
+                  {[
+                    {
+                      year: "2023",
+                      event: "System conceptualized and requirements gathered",
+                    },
+                    {
+                      year: "2024",
+                      event: "Pilot launched across 4 university sectors",
+                    },
+                    {
+                      year: "2025",
+                      event:
+                        "Full deployment covering 12+ sectors and 250+ KPIs",
+                    },
+                    {
+                      year: "2026",
+                      event: "AI-powered predictive analytics integration",
+                    },
+                  ].map((m, i) => (
+                    <div key={m.year} className="flex gap-4 items-start">
+                      <div className="flex flex-col items-center">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center text-xs font-bold text-primary tabular-nums">
+                          {i + 1}
+                        </div>
+                        {i < 3 && <div className="w-px h-6 bg-border" />}
+                      </div>
+                      <div className="pb-2">
+                        <span className="text-xs font-semibold text-primary tabular-nums">
+                          {m.year}
+                        </span>
+                        <p className="text-sm text-foreground mt-0.5">
+                          {m.event}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="absolute -z-10 -bottom-4 -left-4 w-full h-full rounded-2xl bg-primary/5 border border-primary/10" />
             </div>
           </div>
         </div>
@@ -287,6 +407,129 @@ const Landing = () => {
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section id="contact" className="py-24 bg-accent/30">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+            <h2 className="text-3xl font-bold text-foreground tracking-tight">
+              Get in touch
+            </h2>
+            <p className="text-muted-foreground leading-relaxed">
+              Have questions about the KPI system? Reach out and our team will
+              get back to you promptly.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-5 gap-8">
+            {/* Form */}
+            <div className="lg:col-span-3 bg-card rounded-2xl border border-border/60 shadow-lg p-8">
+              <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+                {/* Name + Email */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Abebe Kebede"
+                      className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="abebe@amu.edu.et"
+                      className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                    />
+                  </div>
+                </div>
+
+                {/* Subject */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="How can we help?"
+                    className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+
+                {/* Message */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">
+                    Message
+                  </label>
+                  <textarea
+                    rows={5}
+                    placeholder="Tell us more about your inquiry..."
+                    className="w-full px-3 py-2 rounded-md border border-input bg-background text-sm placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/90 transition-colors"
+                >
+                  <Send className="w-4 h-4" />
+                  Send Message
+                </button>
+              </form>
+            </div>
+
+            {/* Contact Info */}
+            <div className="lg:col-span-2 space-y-4">
+              {[
+                {
+                  icon: MapPin,
+                  title: "Address",
+                  lines: [
+                    "Arba Minch University",
+                    "Arba Minch, SNNPR, Ethiopia",
+                  ],
+                },
+                {
+                  icon: Mail,
+                  title: "Email",
+                  lines: ["info@amu.edu.et", "kpi-support@amu.edu.et"],
+                },
+                {
+                  icon: Phone,
+                  title: "Phone",
+                  lines: ["+251 46 881 1147", "+251 46 881 4986"],
+                },
+              ].map((c) => (
+                <div
+                  key={c.title}
+                  className="p-6 rounded-xl bg-card border border-border/60 hover:shadow-md hover:border-primary/20 transition-all duration-300 flex gap-4 items-start"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-primary shrink-0">
+                    <c.icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground text-sm mb-1">
+                      {c.title}
+                    </h4>
+                    {c.lines.map((l) => (
+                      <p key={l} className="text-sm text-muted-foreground">
+                        {l}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
