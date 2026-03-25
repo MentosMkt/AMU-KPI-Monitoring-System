@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Layers } from "lucide-react";
 
 const user = {
-  isAuthenticated: false,
+  isAuthenticated: true,
 };
 
 const navLinks = ["About", "Features", "Benefits", "Contact"];
@@ -69,7 +69,7 @@ const Navbar = () => {
           {navLinks.map((link) => (
             <a
               key={link}
-              href={`#${link.toLowerCase()}`}
+              href={`/#${link.toLowerCase()}`}
               className="px-3.5 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-accent/50"
             >
               {link}
