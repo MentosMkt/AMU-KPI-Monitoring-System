@@ -23,6 +23,7 @@ import {
 
 import kpiImage from "../../assets/images/kpi.jpeg";
 import { useEffect } from "react";
+import Navbar from "../../Components/UI/Navbar";
 
 const features = [
   {
@@ -78,6 +79,7 @@ const Landing = () => {
 
   return (
     <div className="flex-1 bg-background overflow-x-hidden w-full">
+      <Navbar />
       {/* Hero */}
       <section className="relative py-24 md:py-32 overflow-hidden">
         <div

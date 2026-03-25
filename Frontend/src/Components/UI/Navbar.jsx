@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Layers } from "lucide-react";
 
 const user = {
-  isAuthenticated: false,
+  isAuthenticated: true,
 };
 
 const navLinks = ["About", "Features", "Benefits", "Contact"];
