@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Navbar from "./Components/UI/Navbar";
+
 import LandingPage from "./Pages/Authentication/LandingPage";
 
 import StrategicDashboard from "./Pages/Strategic/StrategicDashboard";
@@ -13,6 +13,7 @@ import NotFoundPage from "./Pages/PageNotFound/PageNotFound";
 import UserManagment from "./Pages/Admin/User-Managment/UserManagment";
 import Admin from "./Pages/Admin/Admin";
 import AdminDashboard from "./Pages/Admin/AdminDashboard/AdminDashboard";
+import KpiManagement from "./Pages/Admin/KPI/Kpi";
 
 function App() {
   return (
@@ -23,16 +24,13 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/signin" element={<SignIn />} />
 
-
-
             <Route path="/admin" element={<Admin />}>
               {/* Sub Routes */}
               <Route index element={<AdminDashboard />} />
               <Route path="user-management" element={<UserManagment />} />
               <Route path="role-management" element={<UserManagment />} />
+              <Route path="kpi" element={<KpiManagement />} />
             </Route>
-
-
 
             <Route path="/Strategic" element={<StrategicDashboard />} />
             <Route path="/Vp" element={<VicePresidentDashboard />} />
