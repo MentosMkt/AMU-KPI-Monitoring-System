@@ -90,7 +90,7 @@ const mockUsers = Array.from({ length: 10 }, (_, i) => ({
   joinedDate: "2024-09-15",
 }));
 
-function UserList({ setSearchQuery, searchQuery, setActiveTab }) {
+function UserList({  searchQuery, setActiveTab }) {
   const [selectedRole, setSelectedRole] = useState("");
   const [selectedRoleCategory, setSelectedRoleCategory] = useState("");
 

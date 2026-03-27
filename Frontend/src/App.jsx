@@ -14,6 +14,7 @@ import UserManagment from "./Pages/Admin/User-Managment/UserManagment";
 import Admin from "./Pages/Admin/Admin";
 import AdminDashboard from "./Pages/Admin/AdminDashboard/AdminDashboard";
 import KpiManagement from "./Pages/Admin/KPI/Kpi";
+import RoleManagement from "./Pages/Admin/RoleManagement/RoleManagement";
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
               {/* Sub Routes */}
               <Route index element={<AdminDashboard />} />
               <Route path="user-management" element={<UserManagment />} />
-              <Route path="role-management" element={<UserManagment />} />
+              <Route path="role-management" element={<RoleManagement />} />
               <Route path="kpi" element={<KpiManagement />} />
             </Route>
 
