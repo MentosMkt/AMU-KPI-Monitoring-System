@@ -4,9 +4,16 @@ const { User, RoleCategory, Role, UserRole } = require('../models');
 const seedData = async () => {
   try {
     console.log('🌱 Starting data seeding...');
-    
+    console.log('=====================================\n');
+
+    // Sync all tables (force: true will drop and recreate tables)
     await sequelize.sync({ force: true });
-    console.log('✅ Database synced');
+    console.log('✅ Database tables created/refreshed\n');
+
+    // ============================================
+    // 1. CREATE ADMIN USER
+    // ============================================
+    console.log('📝 Creating Admin User...');
     
     const adminUser = await User.create({
       FirstName: 'System',
@@ -16,161 +23,143 @@ const seedData = async () => {
       UserName: 'admin',
       Phone: '1234567890',
       password: 'Admin@123',
+      CreatedAt: new Date(),
       CreatedBy: null,
       IsArchived: false
     });
-    console.log('✅ Admin user created:', adminUser.Email);
     
-    const categories = await RoleCategory.bulkCreate([
-      {
-        CategoryName: 'Executive Management',
-        Description: 'Top-level management roles',
-        CreatedBy: adminUser.Id
-      },
-      {
-        CategoryName: 'Middle Management',
-        Description: 'Department and unit heads',
-        CreatedBy: adminUser.Id
-      },
-      {
-        CategoryName: 'Operational',
-        Description: 'Front-line staff and team members',
-        CreatedBy: adminUser.Id
-      },
-      {
-        CategoryName: 'Technical',
-        Description: 'Technical and specialist roles',
-        CreatedBy: adminUser.Id
-      }
-    ]);
-    console.log('✅ Role categories created');
+    console.log('✅ Admin User Created:');
+    console.log(`   ID: ${adminUser.Id}`);
+    console.log(`   Name: ${adminUser.FirstName} ${adminUser.FatherName} ${adminUser.GrandFatherName}`);
+    console.log(`   Username: ${adminUser.UserName}`);
+    console.log(`   Email: ${adminUser.Email}`);
+    console.log(`   Password: Admin@123 (will be hashed)\n`);
+
+    // ============================================
+    // 2. CREATE SYSTEM ADMINISTRATION ROLE CATEGORY
+    // ============================================
+    console.log('📁 Creating Role Category...');
     
-    const executiveCategory = categories[0];
-    const middleCategory = categories[1];
-    const operationalCategory = categories[2];
-    const technicalCategory = categories[3];
+    const systemAdminCategory = await RoleCategory.create({
+      CategoryName: 'System Administration',
+      Description: 'System administrators with full system access and control',
+      CreatedAt: new Date(),
+      CreatedBy: adminUser.Id,
+      IsArchived: false
+    });
     
-    const roles = await Role.bulkCreate([
-      {
-        RoleCategoryId: executiveCategory.Id,
-        RoleName: 'Chief Executive Officer (CEO)',
-        Description: 'Overall strategic leadership',
-        HasExtraMeasures: true,
-        CreatedBy: adminUser.Id
-      },
-      {
-        RoleCategoryId: executiveCategory.Id,
-        RoleName: 'Chief Operations Officer (COO)',
-        Description: 'Oversee daily operations',
-        HasExtraMeasures: true,
-        CreatedBy: adminUser.Id
-      },
-      {
-        RoleCategoryId: executiveCategory.Id,
-        RoleName: 'Chief Financial Officer (CFO)',
-        Description: 'Financial strategy and management',
-        HasExtraMeasures: true,
-        CreatedBy: adminUser.Id
-      },
-      {
-        RoleCategoryId: middleCategory.Id,
-        RoleName: 'Department Director',
-        Description: 'Department leadership',
-        HasExtraMeasures: true,
-        CreatedBy: adminUser.Id
-      },
-      {
-        RoleCategoryId: middleCategory.Id,
-        RoleName: 'Unit Manager',
-        Description: 'Unit supervision',
-        HasExtraMeasures: false,
-        CreatedBy: adminUser.Id
-      },
-      {
-        RoleCategoryId: operationalCategory.Id,
-        RoleName: 'Team Leader',
-        Description: 'Team coordination',
-        HasExtraMeasures: false,
-        CreatedBy: adminUser.Id
-      },
-      {
-        RoleCategoryId: operationalCategory.Id,
-        RoleName: 'Staff Member',
-        Description: 'Regular staff duties',
-        HasExtraMeasures: false,
-        CreatedBy: adminUser.Id
-      },
-      {
-        RoleCategoryId: technicalCategory.Id,
-        RoleName: 'Senior Developer',
-        Description: 'Technical leadership',
-        HasExtraMeasures: true,
-        CreatedBy: adminUser.Id
-      },
-      {
-        RoleCategoryId: technicalCategory.Id,
-        RoleName: 'Junior Developer',
-        Description: 'Development support',
-        HasExtraMeasures: false,
-        CreatedBy: adminUser.Id
-      },
-      {
-        RoleCategoryId: technicalCategory.Id,
-        RoleName: 'System Administrator',
-        Description: 'System maintenance',
-        HasExtraMeasures: true,
-        CreatedBy: adminUser.Id
-      }
-    ]);
-    console.log('✅ Roles created');
+    console.log('✅ Role Category Created:');
+    console.log(`   ID: ${systemAdminCategory.Id}`);
+    console.log(`   Name: ${systemAdminCategory.CategoryName}`);
+    console.log(`   Description: ${systemAdminCategory.Description}\n`);
+
+    // ============================================
+    // 3. CREATE SYSTEM ADMINISTRATOR ROLE
+    // ============================================
+    console.log('👥 Creating System Administrator Role...');
     
-    const ceoRole = roles.find(r => r.RoleName === 'Chief Executive Officer (CEO)');
-    const directorRole = roles.find(r => r.RoleName === 'Department Director');
-    const unitManagerRole = roles.find(r => r.RoleName === 'Unit Manager');
-    const teamLeaderRole = roles.find(r => r.RoleName === 'Team Leader');
-    const staffRole = roles.find(r => r.RoleName === 'Staff Member');
+    const systemAdminRole = await Role.create({
+      RoleCategoryId: systemAdminCategory.Id,
+      RoleName: 'System Administrator',
+      ParentRoleId: null,
+      Description: 'Full system administration with all privileges',
+      HasExtraMeasures: false,
+      CreatedAt: new Date(),
+      CreatedBy: adminUser.Id,
+      IsArchived: false
+    });
     
-    if (directorRole && ceoRole) {
-      await directorRole.update({ ParentRoleId: ceoRole.Id });
-    }
+    console.log('✅ Role Created:');
+    console.log(`   ID: ${systemAdminRole.Id}`);
+    console.log(`   Name: ${systemAdminRole.RoleName}`);
+    console.log(`   Category: System Administration`);
+    console.log(`   Has Extra Measures: Yes\n`);
+
+    // ============================================
+    // 4. ASSIGN ADMIN ROLE TO ADMIN USER
+    // ============================================
+    console.log('👑 Assigning System Administrator role to admin user...');
     
-    if (unitManagerRole && directorRole) {
-      await unitManagerRole.update({ ParentRoleId: directorRole.Id });
-    }
+    await UserRole.create({
+      UserId: adminUser.Id,
+      RoleId: systemAdminRole.Id,
+      FromDate: new Date(),
+      ToDate: null,  // No end date - permanent role
+      CreatedAt: new Date(),
+      CreatedBy: adminUser.Id,
+      IsArchived: false
+    });
     
-    if (teamLeaderRole && unitManagerRole) {
-      await teamLeaderRole.update({ ParentRoleId: unitManagerRole.Id });
-    }
+    console.log(`✅ ${adminUser.UserName} assigned as ${systemAdminRole.RoleName}`);
+    console.log(`   From Date: ${new Date().toLocaleDateString()}`);
+    console.log(`   To Date: Permanent\n`);
+
+    // ============================================
+    // 5. VERIFICATION - QUERY ALL DATA
+    // ============================================
+    console.log('🔍 Verifying seeded data...\n');
     
-    if (staffRole && teamLeaderRole) {
-      await staffRole.update({ ParentRoleId: teamLeaderRole.Id });
-    }
+    // Count users
+    const userCount = await User.count();
+    console.log(`📊 Users: ${userCount}`);
     
-    console.log('✅ Role hierarchy established');
+    // Count role categories
+    const categoryCount = await RoleCategory.count();
+    console.log(`📊 Role Categories: ${categoryCount}`);
     
-    const adminRole = roles.find(r => r.RoleName === 'System Administrator');
-    if (adminRole) {
-      await UserRole.create({
-        UserId: adminUser.Id,
-        RoleId: adminRole.Id,
-        FromDate: new Date(),
-        ToDate: null,
-        CreatedBy: adminUser.Id
-      });
-      console.log('✅ Admin role assigned to admin user');
-    }
+    // Count roles
+    const roleCount = await Role.count();
+    console.log(`📊 Roles: ${roleCount}`);
     
-    console.log('\n🎉 Seeding completed successfully!');
-    console.log('\n📝 Default Login Credentials:');
-    console.log('   Email: admin@kpi-system.com');
+    // Count user role assignments
+    const assignmentCount = await UserRole.count();
+    console.log(`📊 User Role Assignments: ${assignmentCount}`);
+    
+    // Get admin user with role
+    const adminWithRole = await User.findByPk(adminUser.Id, {
+      include: [{
+        model: UserRole,
+        where: { IsArchived: false },
+        required: false,
+        include: [{
+          model: Role,
+          include: ['RoleCategory']
+        }]
+      }]
+    });
+    
+    console.log('\n📋 Admin User Details:');
+    console.log(`   Name: ${adminWithRole.FirstName} ${adminWithRole.FatherName} ${adminWithRole.GrandFatherName}`);
+    console.log(`   Username: ${adminWithRole.UserName}`);
+    console.log(`   Email: ${adminWithRole.Email}`);
+    console.log(`   Current Role: ${adminWithRole.UserRoles?.[0]?.Role?.RoleName || 'None'}`);
+    console.log(`   Role Category: ${adminWithRole.UserRoles?.[0]?.Role?.RoleCategory?.CategoryName || 'None'}`);
+    console.log(`   Has Extra Measures: ${adminWithRole.UserRoles?.[0]?.Role?.HasExtraMeasures ? 'Yes' : 'No'}`);
+
+    // ============================================
+    // 6. SEEDING COMPLETE
+    // ============================================
+    console.log('\n=====================================');
+    console.log('🎉 Seeding Completed Successfully!');
+    console.log('=====================================\n');
+    
+    console.log('📝 Default Login Credentials:');
     console.log('   Username: admin');
+    console.log('   Email: admin@gmail.com');
     console.log('   Password: Admin@123');
-    console.log('\n⚠️  Please change the admin password after first login!\n');
+    console.log('\n⚠️  IMPORTANT: Please change the admin password after first login!\n');
+    
+    console.log('🏁 You can now test your API:');
+    console.log('   1. npm run dev (start server)');
+    console.log('   2. Test login: POST http://localhost:5000/api/auth/login');
+    console.log('   3. Body: { "UserName": "admin", "password": "Admin@123" }');
+    console.log('\n💡 Other role categories and roles can be added dynamically through the API!\n');
     
     process.exit(0);
     
   } catch (error) {
     console.error('❌ Seeding error:', error);
+    console.error('Error details:', error.message);
     process.exit(1);
   }
 };
