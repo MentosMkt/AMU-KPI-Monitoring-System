@@ -1,55 +1,130 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --color-primary-gray-background: #f6f7f9;
+  --color-bg-table: #ffffff; /* light gray (very soft background) */
+
+  --color-primary-gray-background: #f6f7f9; /* light gray (very soft background) */
+
   /* Main Colors */
-  --color-background: #f6f7f9;
-  --color-foreground: #24262d;
+  --color-background: #f6f7f9; /* page background (light gray) */
+  --color-foreground: #24262d; /* primary text (dark charcoal) */
 
-  --color-card: #ffffff;
-  --color-card-foreground: #24262d;
+  --color-card: #ffffff; /* card background (white) */
+  --color-card-foreground: #24262d; /* card text (dark charcoal) */
 
-  --color-popover: #ffffff;
-  --color-popover-foreground: #24262d;
+  --color-popover: #ffffff; /* popover background (white) */
+  --color-popover-foreground: #24262d; /* popover text (dark charcoal) */
 
-  --color-primary: #3b82f6;
-  --color-primary-foreground: #ffffff;
+  --color-primary: #3b82f6; /* primary blue */
+  --color-primary-foreground: #ffffff; /* text on primary (white) */
 
-  --color-secondary: #f0f2f6;
-  --color-secondary-foreground: #24262d;
+  --color-secondary: #f0f2f6; /* soft gray (secondary background) */
+  --color-secondary-foreground: #24262d; /* dark text */
 
-  --color-muted: #f0f2f6;
-  --color-muted-foreground: #757b8c;
+  --color-muted: #f0f2f6; /* muted light gray */
+  --color-muted-foreground: #757b8c; /* muted text (cool gray) */
 
-  --color-accent: #e1f0ff;
-  --color-accent-foreground: #3b82f6;
+  --color-accent: #e1f0ff; /* light blue accent */
+  --color-accent-foreground: #3b82f6; /* accent text (blue) */
 
-  --color-destructive: #e53935;
-  --color-destructive-foreground: #ffffff;
+  --color-destructive: #e53935; /* red (error/danger) */
+  --color-destructive-foreground: #ffffff; /* white text */
 
-  --color-success: #2ecc71;
-  --color-success-foreground: #ffffff;
+  --color-success: #2ecc71; /* green (success) */
+  --color-success-foreground: #ffffff; /* white text */
 
-  --color-warning: #f1c40f;
-  --color-warning-foreground: #ffffff;
+  --color-warning: #f1c40f; /* yellow (warning) */
+  --color-warning-foreground: #ffffff; /* white text */
 
-  --color-border: #e6e8f0;
-  --color-input: #e6e8f0;
-  --color-ring: #3b82f6;
+  --color-border: #e6e8f0; /* light border gray */
+  --color-input: #e6e8f0; /* input border/background */
+  --color-ring: #3b82f6; /* focus ring (blue) */
+
+  --color-radius: 0.75rem; /* border radius */
+
+  /* Sidebar Colors */
+  --sidebar-background: #ffffff; /* sidebar background (white) */
+  --sidebar-foreground: #24262d; /* sidebar text (dark charcoal) */
+
+  --sidebar-primary: #3b82f6; /* sidebar primary (blue) */
+  --sidebar-primary-foreground: #ffffff; /* white text */
+
+  --sidebar-accent: #e1f0ff; /* light blue accent */
+  --sidebar-accent-foreground: #3b82f6; /* blue text */
+
+  --sidebar-border: #e6e8f0; /* sidebar border gray */
+  --sidebar-ring: #3b82f6; /* focus ring */
+
+  --sidebar-muted: #757b8c; /* muted gray text */
+
+  /* Custom shadows */
+  --shadow-soft: 0 10px 25px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+  --shadow-glow: 0 0 15px rgba(59, 130, 246, 0.5);
+  --shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-floating: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inset: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  --shadow-neon: 0 0 5px theme('colors.cyan.400'), 0 0 20px theme('colors.cyan.500');
+  --shadow-border: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.dark {
+  --color-bg-table: #1e293b;
+  --color-primary-gray-background: #0f172a; /* deep navy */
+
+  --color-background: #0b1120; /* dark background (almost black-blue) */
+  --color-foreground: #e2e8f0; /* light text (soft white) */
+
+  --color-card: #111827; /* dark card (slate) */
+  --color-card-foreground: #e2e8f0; /* light text */
+
+  --color-popover: #1f2937; /* dark gray popover */
+  --color-popover-foreground: #e2e8f0; /* light text */
+
+  --color-primary: #60a5fa; /* lighter blue */
+  --color-primary-foreground: #0f172a; /* dark text */
+
+  --color-secondary: #1f2937; /* dark secondary */
+  --color-secondary-foreground: #e2e8f0; /* light text */
+
+  --color-muted: #1e293b; /* muted dark */
+  --color-muted-foreground: #94a3b8; /* gray text */
+
+  --color-accent: #1f2937; /* dark accent */
+  --color-accent-foreground: #60a5fa; /* blue text */
+
+  --color-destructive: #f87171; /* soft red */
+  --color-destructive-foreground: #0f172a; /* dark text */
+
+  --color-success: #34d399; /* mint green */
+  --color-success-foreground: #0f172a; /* dark text */
+
+  --color-warning: #fbbf24; /* amber */
+  --color-warning-foreground: #0f172a; /* dark text */
+
+  --color-border: #334155; /* dark border */
+  --color-input: #334155; /* input border */
+  --color-ring: #3b82f6; /* focus ring */
 
   --color-radius: 0.75rem;
 
-  /* Sidebar Colors */
-  --sidebar-background: #ffffff;
-  --sidebar-foreground: #24262d;
+  --sidebar-background: #111827; /* dark sidebar */
+  --sidebar-foreground: #e2e8f0; /* light text */
 
-  --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary: #60a5fa; /* light blue */
+  --sidebar-primary-foreground: #0f172a; /* dark text */
 
-  --sidebar-accent: #e1f0ff;
-  --sidebar-accent-foreground: #3b82f6;
+  --sidebar-accent: #1f2937; /* dark accent */
+  --sidebar-accent-foreground: #60a5fa; /* blue text */
 
-  --sidebar-border: #e6e8f0;
-  --sidebar-ring: #3b82f6;
-  --sidebar-muted: #757b8c;
+  --sidebar-border: #334155; /* border */
+  --sidebar-ring: #60a5fa; /* focus ring */
+
+  --sidebar-muted: #94a3b8; /* muted gray */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
+  }
 }
