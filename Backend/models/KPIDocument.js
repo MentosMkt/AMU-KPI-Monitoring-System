@@ -1,18 +1,26 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/database');
 
-const UserKPI = sequelize.define('UserKPI', {
+const KPIDocument = sequelize.define('KPIDocument', {
   Id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
+  UserId: {
+    type: DataTypes.UUID,
+    allowNull: false
+  },
   KPIId: {
     type: DataTypes.UUID,
     allowNull: false
   },
-  UserId: {
-    type: DataTypes.UUID,
+  DOCTitle: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  FileURL: {
+    type: DataTypes.STRING,
     allowNull: false
   },
   Remark: {
@@ -35,4 +43,4 @@ const UserKPI = sequelize.define('UserKPI', {
   timestamps: false
 });
 
-module.exports = UserKPI;
+module.exports = KPIDocument;

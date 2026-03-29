@@ -13,6 +13,12 @@ const authRoutes = require('./routes/authRoutes');
 const roleCategoryRoutes = require('./routes/roleCategoryRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const userRoleRoutes = require('./routes/userRoleRoutes');
+const unitRoutes = require('./routes/unitRoutes');
+const kpiTypeRoutes = require('./routes/kpiTypeRoutes');
+const kpiRoutes = require('./routes/kpiRoutes');
+const userKpiRoutes = require('./routes/userKpiRoutes');
+const userKpiResultRoutes = require('./routes/userKpiResultRoutes');
+const kpiDocumentRoutes = require('./routes/kpiDocumentRoutes');
 
 const app = express();
 
@@ -33,6 +39,12 @@ app.use('/api/auth', authRoutes);
 app.use('/api/role-categories', roleCategoryRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/user-roles', userRoleRoutes);
+app.use('/api/units', unitRoutes);
+app.use('/api/kpi-types', kpiTypeRoutes);
+app.use('/api/kpis', kpiRoutes);
+app.use('/api/user-kpis', userKpiRoutes);
+app.use('/api/user-kpi-results', userKpiResultRoutes);
+app.use('/api/kpi-documents', kpiDocumentRoutes);
 
 app.get('/health', (req, res) => {
   res.json({
