@@ -1,89 +1,19 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { Input } from '../../../Components/UI/Input';
+import CustomSelect from '../../../Components/UI/CustomSelect';
 
-// Custom Input component
-const Input = ({ className, ...props }) => {
-  return (
-    <input
-      className={`flex h-11 w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
-      {...props}
-    />
-  );
-};
-
-// Custom Select component
-const CustomSelect = ({ options, value, onChange, placeholder }) => {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div className="relative w-full">
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="w-full px-4 py-3 text-left bg-white border border-gray-300 rounded-xl flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        {value || placeholder}
-        <svg
-          className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
-
-      {open && (
-        <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-xl shadow-md max-h-60 overflow-auto">
-          {options.map((opt) => (
-            <li
-              key={opt}
-              onClick={() => {
-                onChange(opt);
-                setOpen(false);
-              }}
-              className="cursor-pointer px-4 py-2 hover:bg-blue-100 flex justify-between items-center"
-            >
-              {opt}
-              {value === opt && (
-                <svg
-                  className="w-4 h-4 text-blue-600"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-};
-
-const roleCategories = ["Academic", "Administrative", "Support", "Management"];
-const roles = ["Lecturer", "Professor", "Dean", "HOD", "Admin", "Registrar"];
+const roleCategories = ['Academic', 'Administrative', 'Support', 'Management'];
+const roles = ['Lecturer', 'Professor', 'Dean', 'HOD', 'Admin', 'Registrar'];
 
 function AddUser({ setActiveTab }) {
   const [formData, setFormData] = useState({
-    roleCategory: "",
-    role: "",
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    email: "",
-    username: "",
+    roleCategory: '',
+    role: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    email: '',
+    username: '',
   });
 
   const handleFormChange = (field, value) => {
@@ -91,22 +21,20 @@ function AddUser({ setActiveTab }) {
   };
 
   const handleSave = () => {
-    console.log("Save user:", formData);
-    setActiveTab("list");
+    console.log('Save user:', formData);
+    setActiveTab('list');
   };
 
   const handleCancel = () => {
-    setActiveTab("list");
+    setActiveTab('list');
   };
 
   return (
     <div className="mx-auto py-8 border border-gray-200 p-4 shadow-all shadow">
       {/* Subtle Header */}
       <div className="mb-10">
-        <h2 className="text-3xl font-semibold text-gray-900">Add New User</h2>
-        <p className="text-gray-500 mt-2">
-          Fill in the details to create a new user account
-        </p>
+        <h2 className="text-3xl font-semibold text-foreground ">Add New User</h2>
+        <p className="text-gray-500 mt-2">Fill in the details to create a new user account</p>
       </div>
 
       <div className="space-y-10">
@@ -119,27 +47,18 @@ function AddUser({ setActiveTab }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-600">
-                Role Category
-              </label>
+              <label className="block text-sm font-medium text-gray-600">Role Category</label>
               <CustomSelect
                 options={roleCategories}
                 value={formData.roleCategory}
-                onChange={(val) => handleFormChange("roleCategory", val)}
+                onChange={(val) => handleFormChange('roleCategory', val)}
                 placeholder="Select Role Category"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-600">
-                Role
-              </label>
-              <CustomSelect
-                options={roles}
-                value={formData.role}
-                onChange={(val) => handleFormChange("role", val)}
-                placeholder="Select Role"
-              />
+              <label className="block text-sm font-medium text-gray-600">Role</label>
+              <CustomSelect options={roles} value={formData.role} onChange={(val) => handleFormChange('role', val)} placeholder="Select Role" />
             </div>
           </div>
         </div>
@@ -152,22 +71,11 @@ function AddUser({ setActiveTab }) {
           </h3>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-600 mb-3">
-              Full Name
-            </label>
+            <label className="block text-sm font-medium text-gray-600 mb-3">Full Name</label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <Input
-                placeholder="First Name"
-                onChange={(e) => handleFormChange("firstName", e.target.value)}
-              />
-              <Input
-                placeholder="Middle Name"
-                onChange={(e) => handleFormChange("middleName", e.target.value)}
-              />
-              <Input
-                placeholder="Last Name"
-                onChange={(e) => handleFormChange("lastName", e.target.value)}
-              />
+              <Input placeholder="First Name" onChange={(e) => handleFormChange('firstName', e.target.value)} />
+              <Input placeholder="Middle Name" onChange={(e) => handleFormChange('middleName', e.target.value)} />
+              <Input placeholder="Last Name" onChange={(e) => handleFormChange('lastName', e.target.value)} />
             </div>
           </div>
         </div>
@@ -181,24 +89,13 @@ function AddUser({ setActiveTab }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-600">
-                Email Address
-              </label>
-              <Input
-                type="email"
-                placeholder="user@example.com"
-                onChange={(e) => handleFormChange("email", e.target.value)}
-              />
+              <label className="block text-sm font-medium text-gray-600">Email Address</label>
+              <Input type="email" placeholder="user@example.com" onChange={(e) => handleFormChange('email', e.target.value)} />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-600">
-                Username
-              </label>
-              <Input
-                placeholder="username"
-                onChange={(e) => handleFormChange("username", e.target.value)}
-              />
+              <label className="block text-sm font-medium text-gray-600">Username</label>
+              <Input placeholder="username" onChange={(e) => handleFormChange('username', e.target.value)} />
             </div>
           </div>
         </div>
