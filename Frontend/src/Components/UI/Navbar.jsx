@@ -1,27 +1,34 @@
-import { Search, Home, Bell, Moon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Search, Home, Bell, Moon, Sun } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import useTheme from '../../Hooks/useTheme';
 
-import { Layers } from "lucide-react";
+import { Layers } from 'lucide-react';
 
 const user = {
   isAuthenticated: true,
 };
 
-const navLinks = ["About", "Features", "Benefits", "Contact"];
+const navLinks = ['About', 'Features', 'Benefits', 'Contact'];
 
 const Navbar = () => {
+  const { isDark, toggleTheme } = useTheme();
+
   return user.isAuthenticated ? (
     <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 shrink-0 w-full">
       <div className="flex items-center gap-4">
         <button className="p-2 rounded-lg hover:bg-secondary transition-colors active:scale-[0.97]">
           <Home className="w-5 h-5 text-muted-foreground" />
         </button>
-        <button className="p-2 rounded-lg hover:bg-secondary transition-colors active:scale-[0.97]">
-          <Moon className="w-5 h-5 text-muted-foreground" />
+        <button
+          className="p-2 rounded-lg hover:bg-secondary transition-colors active:scale-[0.97]"
+          onClick={toggleTheme}
+          aria-label="Toggle dark mode"
+        >
+          {isDark ? <Sun className="w-5 h-5 text-muted-foreground" /> : <Moon className="w-5 h-5 text-muted-foreground" />}
         </button>
       </div>
 
-      <div className="flex-1 max-w-md mx-8">
+      {/* <div className="flex-1 max-w-md mx-8">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
@@ -30,7 +37,7 @@ const Navbar = () => {
             className="w-full h-10 pl-10 pr-4 rounded-xl bg-secondary text-sm text-foreground placeholder:text-muted-foreground border-none outline-none focus:ring-2 focus:ring-ring transition-shadow"
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="flex items-center gap-3">
         <button className="relative p-2 rounded-lg hover:bg-secondary transition-colors active:scale-[0.97] cursor-pointer">
@@ -39,16 +46,10 @@ const Navbar = () => {
         </button>
         <div className="h-8 w-px bg-border" />
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary">
-            SA
-          </div>
+          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary">SA</div>
           <div className="text-right hidden sm:block">
-            <p className="text-sm font-semibold text-foreground leading-tight">
-              Mr. Samson Alemu
-            </p>
-            <p className="text-xs text-muted-foreground">
-              System Administrator
-            </p>
+            <p className="text-sm font-semibold text-foreground leading-tight">Mr. Samson Alemu</p>
+            <p className="text-xs text-muted-foreground">System Administrator</p>
           </div>
         </div>
       </div>
@@ -60,9 +61,7 @@ const Navbar = () => {
           <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shadow-md shadow-primary/20 transition-transform group-hover:scale-105 group-active:scale-95">
             <Layers className="w-5 h-5 text-primary-foreground" />
           </div>
-          <span className="font-bold text-foreground text-base tracking-tight">
-            AMU KPI System
-          </span>
+          <span className="font-bold text-foreground text-base tracking-tight">AMU KPI System</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-1">
