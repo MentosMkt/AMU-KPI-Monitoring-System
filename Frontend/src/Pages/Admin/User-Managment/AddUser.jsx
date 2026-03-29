@@ -30,24 +30,24 @@ function AddUser({ setActiveTab }) {
   };
 
   return (
-    <div className="mx-auto py-8 border border-gray-200 p-4 shadow-all shadow">
+    <div className="mx-auto py-8 border border-gray-200/40 rounded p-4 shadow-all shadow">
       {/* Subtle Header */}
       <div className="mb-10">
-        <h2 className="text-3xl font-semibold text-foreground ">Add New User</h2>
-        <p className="text-gray-500 mt-2">Fill in the details to create a new user account</p>
+        <h2 className="text-xl font-semibold text-foreground ">Add New User</h2>
+        <p className="text-foreground text-xs mt-2">Fill in the details to create a new user account</p>
       </div>
 
       <div className="space-y-10">
         {/* Role Assignment */}
         <div>
-          <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center gap-2">
+          <h3 className="text-sm font-medium text-foreground  mb-4 flex items-center gap-2">
             <span className="text-blue-600">●</span>
             Role Assignment
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-600">Role Category</label>
+              <label className="block text-sm font-medium text-foreground ">Role Category</label>
               <CustomSelect
                 options={roleCategories}
                 value={formData.roleCategory}
@@ -57,7 +57,7 @@ function AddUser({ setActiveTab }) {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-600">Role</label>
+              <label className="block text-sm font-medium text-foreground ">Role</label>
               <CustomSelect options={roles} value={formData.role} onChange={(val) => handleFormChange('role', val)} placeholder="Select Role" />
             </div>
           </div>
@@ -65,13 +65,13 @@ function AddUser({ setActiveTab }) {
 
         {/* Personal Information */}
         <div>
-          <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center gap-2">
+          <h3 className="text-sm font-medium text-foreground  mb-4 flex items-center gap-2">
             <span className="text-emerald-600">●</span>
             Personal Information
           </h3>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-600 mb-3">Full Name</label>
+            <label className="block text-sm font-medium text-foreground  mb-3">Full Name</label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <Input placeholder="First Name" onChange={(e) => handleFormChange('firstName', e.target.value)} />
               <Input placeholder="Middle Name" onChange={(e) => handleFormChange('middleName', e.target.value)} />
@@ -82,19 +82,19 @@ function AddUser({ setActiveTab }) {
 
         {/* Account Information */}
         <div>
-          <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center gap-2">
+          <h3 className="text-sm font-medium text-foreground  mb-4 flex items-center gap-2">
             <span className="text-violet-600">●</span>
             Account Information
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-600">Email Address</label>
+              <label className="block text-sm font-medium text-foreground ">Email Address</label>
               <Input type="email" placeholder="user@example.com" onChange={(e) => handleFormChange('email', e.target.value)} />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-600">Username</label>
+              <label className="block text-sm font-medium text-foreground ">Username</label>
               <Input placeholder="username" onChange={(e) => handleFormChange('username', e.target.value)} />
             </div>
           </div>
@@ -105,13 +105,13 @@ function AddUser({ setActiveTab }) {
       <div className="flex justify-end gap-4 mt-12 pt-8 border-t border-gray-200">
         <button
           onClick={handleCancel}
-          className="px-8 py-2 rounded hover:bg-red-500 hover:text-white cursor-pointer font-medium transition border text-black border-red-500"
+          className="px-8 py-2 rounded hover:bg-red-500 hover:text-white cursor-pointer font-medium transition border text-foreground  border-red-500"
         >
           Cancel
         </button>
         <button
           onClick={handleSave}
-          className=" hover:bg-blue-700 hover:text-white cursor-pointer text-black border border-blue-400 font-medium rounded transition shadow-sm px-8"
+          className=" hover:bg-blue-700 hover:text-white cursor-pointer text-foreground  border border-blue-400 font-medium rounded transition shadow-sm px-8"
         >
           Save User
         </button>

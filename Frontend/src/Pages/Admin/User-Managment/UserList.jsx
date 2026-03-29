@@ -1,7 +1,7 @@
 import { Search, UserPlus } from 'lucide-react';
 import { useState } from 'react';
 
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../../Components/UI/Table';
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell, TablePagination } from '../../../Components/UI/Table';
 
 import SearchInput from '../../../Components/UI/SearchInput';
 import CustomSelect from '../../../Components/UI/CustomSelect';
@@ -54,20 +54,22 @@ import CustomSelect from '../../../Components/UI/CustomSelect';
 //   );
 // };
 
-const mockUsers = Array.from({ length: 10 }, (_, i) => ({
+const mockUsers = Array.from({ length: 50 }, (_, i) => ({
   id: i + 1,
-  firstName: 'Abebe',
-  middleName: 'Kebede',
-  lastName: 'Tadesse',
+  firstName: ['Abebe', 'Kebede', 'Tadesse', 'Mengistu', 'Haile', 'Solomon', 'Dawit', 'Yohannes'][i % 8],
+  middleName: ['Kebede', 'Tadesse', 'Mengistu', 'Haile', 'Solomon', 'Dawit', 'Yohannes', 'Abebe'][i % 8],
+  lastName: ['Tadesse', 'Mengistu', 'Haile', 'Solomon', 'Dawit', 'Yohannes', 'Abebe', 'Kebede'][i % 8],
   email: `user${i + 1}@amu.edu.et`,
-  role: 'Lecturer',
-  roleCategory: 'Academic',
+  role: ['Lecturer', 'Professor', 'Assistant', 'Dean', 'Chair'][i % 5],
+  roleCategory: ['Academic', 'Administrative', 'Support'][i % 3],
   joinedDate: '2024-09-15',
 }));
 
 function UserList({ searchQuery, setActiveTab }) {
   const [selectedRole, setSelectedRole] = useState('');
   const [selectedRoleCategory, setSelectedRoleCategory] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const uniqueRoles = ['All Roles', ...new Set(mockUsers.map((u) => u.role))];
   const uniqueCategories = ['All Categories', ...new Set(mockUsers.map((u) => u.roleCategory))];
@@ -78,6 +80,16 @@ function UserList({ searchQuery, setActiveTab }) {
     const matchesCategory = selectedRoleCategory === '' || u.roleCategory === selectedRoleCategory;
     return matchesSearch && matchesRole && matchesCategory;
   });
+
+  // Pagination logic
+  const totalItems = filteredUsers.length;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
@@ -129,7 +141,7 @@ function UserList({ searchQuery, setActiveTab }) {
         </TableHeader>
 
         <TableBody>
-          {filteredUsers.map((user) => (
+          {paginatedUsers.map((user) => (
             <TableRow key={user.id}>
               <TableCell>{user.firstName}</TableCell>
               <TableCell>{user.middleName}</TableCell>
@@ -145,6 +157,8 @@ function UserList({ searchQuery, setActiveTab }) {
           ))}
         </TableBody>
       </Table>
+
+      <TablePagination currentPage={currentPage} totalItems={totalItems} itemsPerPage={itemsPerPage} onPageChange={handlePageChange} />
     </>
   );
 }

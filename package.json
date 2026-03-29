@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Mati-21/AMU-KPI-Monitoring-System#readme",
   "dependencies": {
+    "@radix-ui/react-select": "^2.2.6",
     "@tailwindcss/vite": "^4.2.2",
     "class-variance-authority": "^0.7.1",
     "tailwindcss": "^4.2.2"
