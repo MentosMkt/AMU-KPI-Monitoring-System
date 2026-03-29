@@ -14,8 +14,8 @@ const UserRole = require('./UserRole');
 RoleCategory.hasMany(Role, { foreignKey: 'RoleCategoryId' });
 Role.belongsTo(RoleCategory, { foreignKey: 'RoleCategoryId' });
 
-Role.hasMany(Role, { foreignKey: 'ParentRoleId', as: 'Children' });
-Role.belongsTo(Role, { foreignKey: 'ParentRoleId', as: 'Parent' });
+Role.hasMany(Role, { foreignKey: 'ParentRoleId', as: 'ChildRoles' });
+Role.belongsTo(Role, { foreignKey: 'ParentRoleId', as: 'ParentRole' });
 
 User.hasMany(UserRole, { foreignKey: 'UserId' });
 UserRole.belongsTo(User, { foreignKey: 'UserId' });
