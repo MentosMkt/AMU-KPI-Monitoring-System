@@ -13,6 +13,24 @@ function RegisterKpi({ setActiveTab }) {
     description: '',
   });
 
+  const resetForm = () => {
+    setKpiForm({
+      kpi: '',
+      category: '',
+      subCategory: '',
+      unit: '',
+      description: '',
+    });
+  };
+
+  const handleSave = () => {
+    console.log('Saving KPI:', kpiForm);
+    resetForm();
+    setActiveTab('kpiList');
+  };
+
+ 
+
   return (
     <section className="space-y-6">
       <div className="bg-card border border-border rounded-xl p-8 max-w-lg">
@@ -56,35 +74,11 @@ function RegisterKpi({ setActiveTab }) {
 
           {/* Buttons */}
           <div className="flex gap-3 pt-2">
-            <Button
-              onClick={() => {
-                setKpiForm({
-                  kpi: '',
-                  category: '',
-                  subCategory: '',
-                  unit: '',
-                  description: '',
-                });
-                setActiveTab('kpiList');
-              }}
-              className="bg-primary hover:bg-primary/90"
-            >
+            <Button onClick={handleSave} className="bg-primary hover:bg-primary/90">
               Save
             </Button>
 
-            <Button
-              onClick={() => {
-                setKpiForm({
-                  kpi: '',
-                  category: '',
-                  subCategory: '',
-                  unit: '',
-                  description: '',
-                });
-                setActiveTab('kpiList');
-              }}
-              className="bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive/20"
-            >
+            <Button onClick={resetForm} className="bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive/20">
               Cancel
             </Button>
           </div>
