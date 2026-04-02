@@ -2,6 +2,8 @@ import { useState } from 'react';
 import TabButton from '../../../Components/UI/TabButton';
 import KpiList from './KpiList';
 import RegisterKpi from './RegisterKpi';
+import RegisterUnit from './RegisterUnit';
+import RegisterCategory from './RegisterCategory';
 
 const KpiManagement = () => {
   const [activeTab, setActiveTab] = useState('list');
@@ -28,8 +30,8 @@ const KpiManagement = () => {
 
           {activeTab === 'list' && <KpiList />}
           {activeTab === 'addKpi' && <RegisterKpi setActiveTab={setActiveTab} />}
-          {activeTab === 'addKpiCategory' && <div>Register KpiCategory</div>}
-          {activeTab === 'addKpiUnit' && <div>Register KpiUnit</div>}
+          {activeTab === 'addKpiCategory' && <RegisterCategory setActiveTab={setActiveTab} />}
+          {activeTab === 'addKpiUnit' && <RegisterUnit setActiveTab={setActiveTab} />}
         </main>
       </div>
     </div>
