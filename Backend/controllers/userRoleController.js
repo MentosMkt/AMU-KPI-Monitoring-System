@@ -114,6 +114,7 @@ const getAllUserRoles = async (req, res) => {
   }
 };
 
+
 const endUserRole = async (req, res) => {
   try {
     const { id } = req.params;
