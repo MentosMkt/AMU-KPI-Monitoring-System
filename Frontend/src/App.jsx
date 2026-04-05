@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LandingPage from './Pages/Authentication/LandingPage';
 
 import VicePresidentDashboard from './Pages/Vice President/VicePresidentDashboard';
-import HigherOfficeDashboard from './Pages/Higher Office/HigherOfficeDashboard';
 import FaculityDashboard from './Pages/Faculity/FaculityDashboard';
 import ChairDashboard from './Pages/Chairs/ChairDashboard';
 import StaffDashboard from './Pages/Staff/StaffDashboard';
@@ -19,11 +18,15 @@ import AlertsNotifications from './Pages/Admin/Notification/AlertsNotification';
 import PermissionManagement from './Pages/Admin/Permissions/PermissonsManagement';
 import UserProfile from './Pages/Profile/UserProfile';
 
-
-
-import Dashboard from './Pages/STRATEGICC/Dashboard';
-import UniversityKpis from './Pages/STRATEGICC/UniversityKpis';
-import Strategic from './Pages/STRATEGICC/Strategic';
+import Dashboard from './Pages/Strategic/Dashboard';
+import UniversityKpis from './Pages/Strategic/UniversityKpis';
+import Strategic from './Pages/Strategic/Strategic';
+import Staff from './Pages/Staff/Staff';
+import Chair from './Pages/Chairs/Chair';
+import Faculity from './Pages/Faculity/Faculity';
+import VicePresident from './Pages/Vice President/VicePresident';
+import HigherInstitutions from './Pages/Higher Institutions/HigherInstitutions';
+import HigherInstitutionsDashboard from './Pages/Higher Institutions/HigherOfficeDashboard';
 
 function App() {
   return (
@@ -36,19 +39,29 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
 
             {/* Staff */}
-            <Route path="/staff" element={<StaffDashboard />} />
+            <Route path="/staff" element={<Staff />}>
+              <Route index element={<StaffDashboard />} />
+            </Route>
 
             {/* Department Chair */}
-            <Route path="/department-chair" element={<ChairDashboard />} />
+            <Route path="/department-chair" element={<Chair />}>
+              <Route index element={<ChairDashboard />} />
+            </Route>
 
             {/* Faculty Admin */}
-            <Route path="/faculty-admin" element={<FaculityDashboard />} />
+            <Route path="/faculty-admin" element={<Faculity />}>
+              <Route index element={<FaculityDashboard />} />
+            </Route>
 
             {/* Higher Institution */}
-            <Route path="/higher-institution" element={<HigherOfficeDashboard />} />
+            <Route path="/higher-institution" element={<HigherInstitutions />}>
+              <Route index element={<HigherInstitutionsDashboard />} />
+            </Route>
 
             {/* Vice President */}
-            <Route path="/vice-president" element={<VicePresidentDashboard />} />
+            <Route path="/vice-president" element={<VicePresident />}>
+              <Route index element={<VicePresidentDashboard />} />
+            </Route>
 
             {/* Strategic Office */}
             <Route path="/strategic-office" element={<Strategic />}>
