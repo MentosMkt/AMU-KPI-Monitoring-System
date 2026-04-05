@@ -1,9 +1,8 @@
-import Sidebar from '../../Components/Dashboard/Sidebar';
-import Navbar from '../../Components/UI/Navbar';
 import { Outlet } from 'react-router-dom';
-// import Sidebar from "../Strategic/StrategicComponents/Sidebar";
+import Navbar from '../../Components/UI/Navbar';
+import Sidebar from '../../Components/Dashboard/Sidebar';
 
-const Admin = () => {
+function Strategic() {
   return (
     <div className="flex min-h-screen bg-background w-full ">
       <Sidebar />
@@ -13,6 +12,6 @@ const Admin = () => {
       </div>
     </div>
   );
-};
+}
 
-export default Admin;
+export default Strategic;
