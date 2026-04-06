@@ -1,88 +1,103 @@
-import { Search, Home, Bell, Moon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Home, Bell, Moon, Sun, Layers, User, Settings, LogOut } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import useTheme from '../../Hooks/useTheme';
 
-import { Layers } from "lucide-react";
+import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from '../UI/DropDown'; // adjust path if needed
+import { DropdownMenuCheckboxItem } from './DropDown';
 
 const user = {
-  isAuthenticated: false,
+  isAuthenticated: true,
 };
 
-const navLinks = ["About", "Features", "Benefits", "Contact"];
+const navLinks = ['About', 'Features', 'Benefits', 'Contact'];
 
 const Navbar = () => {
+  const { isDark, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+
   return user.isAuthenticated ? (
-    <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 shrink-0 w-full">
+    <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 w-full">
+      {/* LEFT */}
       <div className="flex items-center gap-4">
-        <button className="p-2 rounded-lg hover:bg-secondary transition-colors active:scale-[0.97]">
+        <button className="p-2 rounded-lg hover:bg-secondary">
           <Home className="w-5 h-5 text-muted-foreground" />
         </button>
-        <button className="p-2 rounded-lg hover:bg-secondary transition-colors active:scale-[0.97]">
-          <Moon className="w-5 h-5 text-muted-foreground" />
+
+        <button className="p-2 rounded-lg hover:bg-secondary" onClick={toggleTheme}>
+          {isDark ? <Sun className="w-5 h-5 text-muted-foreground" /> : <Moon className="w-5 h-5 text-muted-foreground" />}
         </button>
       </div>
 
-      <div className="flex-1 max-w-md mx-8">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search across modules and users"
-            className="w-full h-10 pl-10 pr-4 rounded-xl bg-secondary text-sm text-foreground placeholder:text-muted-foreground border-none outline-none focus:ring-2 focus:ring-ring transition-shadow"
-          />
-        </div>
-      </div>
-
+      {/* RIGHT */}
       <div className="flex items-center gap-3">
-        <button className="relative p-2 rounded-lg hover:bg-secondary transition-colors active:scale-[0.97] cursor-pointer">
+        {/* Notifications */}
+        <button className="p-2 rounded-lg hover:bg-muted relative" onClick={() => navigate('/alerts')}>
           <Bell className="w-5 h-5 text-muted-foreground" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-destructive rounded-full" />
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full" />
         </button>
-        <div className="h-8 w-px bg-border" />
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary">
-            SA
-          </div>
-          <div className="text-right hidden sm:block">
-            <p className="text-sm font-semibold text-foreground leading-tight">
-              Mr. Samson Alemu
-            </p>
-            <p className="text-xs text-muted-foreground">
-              System Administrator
-            </p>
-          </div>
-        </div>
+        <div className="h-8 w-px bg-border mx-1" />
+        {/* SIMPLE DROPDOWN */}
+
+        <DropdownMenu
+          trigger={
+            <button className="flex items-center gap-3 rounded-lg p-1.5 hover:bg-muted">
+              <div className="text-right">
+                <p className="text-sm font-semibold">Mr. Samson Alemu</p>
+                <p className="text-xs text-muted-foreground">System Administrator</p>
+              </div>
+
+              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">SA</div>
+            </button>
+          }
+        >
+          {/* ✅ PROFILE */}
+          <DropdownMenuItem>
+            <Link to="profile" className="flex items-center w-full">
+              <User className="w-4 h-4 mr-2" />
+              My Profile
+            </Link>
+          </DropdownMenuItem>
+
+          {/* ✅ SETTINGS */}
+          <DropdownMenuItem>
+            <Link to="configuration" className="flex items-center w-full">
+              <Settings className="w-4 h-4 mr-2" />
+              Settings
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+
+          {/* ❗ LOGOUT stays button (not link) */}
+          <DropdownMenuItem onClick={() => console.log('logout')} className="text-red-500 flex">
+            <LogOut className="w-4 h-4 mr-2" />
+            Sign Out
+          </DropdownMenuItem>
+        </DropdownMenu>
       </div>
     </header>
   ) : (
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/60">
+    <nav className="sticky top-0 bg-background border-b">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 h-16">
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shadow-md shadow-primary/20 transition-transform group-hover:scale-105 group-active:scale-95">
-            <Layers className="w-5 h-5 text-primary-foreground" />
+        <Link to="/" className="flex items-center gap-2">
+          <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
+            <Layers className="w-5 h-5 text-white" />
           </div>
-          <span className="font-bold text-foreground text-base tracking-tight">
-            AMU KPI System
-          </span>
+          <span className="font-bold">AMU KPI System</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex items-center gap-2">
           {navLinks.map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
-              className="px-3.5 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-accent/50"
-            >
+            <a key={link} href={`/#${link.toLowerCase()}`}>
               {link}
             </a>
           ))}
         </div>
 
-        <div className="flex items-center gap-2.5">
-          {/* Navbar Buttons as normal buttons */}
-          <button className="hidden sm:inline-flex px-3 py-2 text-sm rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors">
-            <a href="#about">Learn More</a>
-          </button>
-          <button className="px-3 py-2 text-sm rounded-md bg-primary text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/90 transition-colors">
+        <div className="flex gap-2">
+          <button className="border px-3 py-2 rounded">Learn More</button>
+
+          <button className="bg-primary text-white px-3 py-2 rounded">
             <Link to="/signin">Sign In</Link>
           </button>
         </div>
