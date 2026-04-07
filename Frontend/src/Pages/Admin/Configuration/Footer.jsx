@@ -9,7 +9,7 @@ function Footer() {
       </p>
       <div className="flex gap-3">
         <Button variant="outline">Reset to Defaults</Button>
-        <Button className="gap-2">
+        <Button className="gap-2 flex items-center cursor-pointer" onClick={() => alert('Configuration saved!')}>
           <Save className="w-4 h-4" /> Save Configuration
         </Button>
       </div>

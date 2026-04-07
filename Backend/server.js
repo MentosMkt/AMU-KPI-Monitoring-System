@@ -23,10 +23,12 @@ const kpiDocumentRoutes = require('./routes/kpiDocumentRoutes');
 const app = express();
 
 app.use(helmet());
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    credentials: true,
+  })
+);
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -51,7 +53,7 @@ app.get('/health', (req, res) => {
     status: 'OK',
     message: 'KPI Monitoring System API',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV
+    environment: process.env.NODE_ENV,
   });
 });
 
@@ -66,11 +68,11 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   try {
     await connectDB();
-    
+
     app.listen(PORT, () => {
       console.log(`🚀 KPI Monitoring System API running on port ${PORT}`);
       console.log(`📍 Environment: ${process.env.NODE_ENV}`);
-      console.log(`🔗 API URL: http://localhost:${PORT}/api`);
+      console.log(`🔗 API URL: http://localhost:${PORT}`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);

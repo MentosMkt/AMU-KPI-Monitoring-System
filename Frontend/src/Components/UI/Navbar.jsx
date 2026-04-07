@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useTheme from '../../Hooks/useTheme';
 
 import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from '../UI/DropDown';
-import { logout } from '../../Store/authSlice';
+import { logout } from '../../Features/authSlice';
 
 const navLinks = ['About', 'Features', 'Benefits', 'Contact'];
 
@@ -16,7 +16,7 @@ const Navbar = () => {
   const user = useSelector((state) => state.auth.user);
   const isAuthenticated = Boolean(user);
   const location = useLocation();
-  console.log(location);
+  
 
   const handleLogout = () => {
     dispatch(logout());

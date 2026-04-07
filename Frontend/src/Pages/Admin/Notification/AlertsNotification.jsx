@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { RefreshCw, CheckCheck, Calendar, Search, Filter, Check, ChevronDown } from 'lucide-react';
+import { Badge } from '../../../Components/UI/Badge';
 
 /* -------------------- Custom Select -------------------- */
 const CustomSelect = ({ options = [], value, onChange, placeholder = 'Select...', className = '' }) => {
@@ -38,14 +39,6 @@ const CustomSelect = ({ options = [], value, onChange, placeholder = 'Select...'
   );
 };
 
-/* -------------------- Simple Badge -------------------- */
-const Badge = ({ children, className = '', ...props }) => {
-  return (
-    <div className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs ${className}`} {...props}>
-      {children}
-    </div>
-  );
-};
 
 /* -------------------- Simple Button -------------------- */
 const Button = ({ children, className = '', ...props }) => {
@@ -213,13 +206,16 @@ const AlertsNotifications = () => {
 
               <Badge
                 onClick={() => setNotifications((prev) => prev.map((x) => (x.id === n.id ? { ...x, read: true } : x)))}
-                className={`cursor-pointer ${n.read ? 'bg-gray-200 text-gray-500' : 'bg-blue-100 text-blue-600'}`}
+                className={`cursor-pointer w- ${n.read ? 'bg-gray-200 text-gray-500' : 'bg-blue-100 text-blue-600'}`}
               >
                 {n.read ? 'Read' : 'Unread'}
               </Badge>
             </div>
           ))}
         </div>
+
+
+
       </main>
     </div>
   );
