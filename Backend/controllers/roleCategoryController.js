@@ -1,0 +1,93 @@
+const { RoleCategory } = require('../models');
+
+const createRoleCategory = async (req, res) => {
+  try {
+    const { CategoryName, Description } = req.body;
+    
+    const category = await RoleCategory.create({
+      CategoryName,
+      Description,
+      CreatedBy: req.user?.Id
+    });
+    
+    res.status(201).json({
+      success: true,
+      data: category
+    });
+  } catch (error) {
+    console.error('Create role category error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+const getRoleCategories = async (req, res) => {
+  try {
+    const categories = await RoleCategory.findAll({
+      where: { IsArchived: false },
+      order: [['CreatedAt', 'DESC']]
+    });
+    
+    res.json({
+      success: true,
+      data: categories
+    });
+  } catch (error) {
+    console.error('Get role categories error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const updateRoleCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { CategoryName, Description } = req.body;
+    
+    const category = await RoleCategory.findByPk(id);
+    
+    if (!category) {
+      return res.status(404).json({ message: 'Role category not found' });
+    }
+    
+    await category.update({
+      CategoryName,
+      Description
+    });
+    
+    res.json({
+      success: true,
+      data: category
+    });
+  } catch (error) {
+    console.error('Update role category error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const deleteRoleCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const category = await RoleCategory.findByPk(id);
+    
+    if (!category) {
+      return res.status(404).json({ message: 'Role category not found' });
+    }
+    
+    await category.update({ IsArchived: true });
+    
+    res.json({
+      success: true,
+      message: 'Role category archived successfully'
+    });
+  } catch (error) {
+    console.error('Delete role category error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+module.exports = {
+  createRoleCategory,
+  getRoleCategories,
+  updateRoleCategory,
+  deleteRoleCategory
+};
