@@ -14,9 +14,7 @@ router.post(
     body('Email').isEmail().withMessage('Please enter a valid email'),
     body('UserName').notEmpty().withMessage('Username is required'),
     body('Phone').notEmpty().withMessage('Phone number is required'),
-    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
-    body('RoleCategoryId').isUUID().withMessage('Valid role category is required'),
-    body('RoleId').isUUID().withMessage('Valid role is required')
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
   ],
   registerUser
 );

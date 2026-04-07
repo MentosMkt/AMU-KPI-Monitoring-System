@@ -1,4 +1,4 @@
-const { UserRole, User, Role, RoleCategory } = require('../models');
+const { UserRole, User, Role } = require('../models');
 const { Op } = require('sequelize');
 
 const assignRoleToUser = async (req, res) => {
@@ -66,17 +66,7 @@ const getUserCurrentRole = async (req, res) => {
       include: [
         {
           model: Role,
-          include: [
-            {
-              model: RoleCategory,
-              attributes: ['Id', 'CategoryName', 'Description']
-            },
-            {
-              model: Role,
-              as: 'ParentRole',
-              attributes: ['Id', 'RoleName']
-            }
-          ]
+          include: ['ParentRole']
         },
         {
           model: User,
@@ -96,47 +86,6 @@ const getUserCurrentRole = async (req, res) => {
   }
 };
 
-const getUserRoleById = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const userRole = await UserRole.findByPk(id, {
-      include: [
-        {
-          model: User,
-          attributes: ['Id', 'FirstName', 'FatherName', 'GrandFatherName', 'Email', 'UserName']
-        },
-        {
-          model: Role,
-          include: [
-            {
-              model: RoleCategory,
-              attributes: ['Id', 'CategoryName', 'Description']
-            },
-            {
-              model: Role,
-              as: 'ParentRole',
-              attributes: ['Id', 'RoleName']
-            }
-          ]
-        }
-      ]
-    });
-
-    if (!userRole) {
-      return res.status(404).json({ message: 'User role assignment not found' });
-    }
-
-    res.json({
-      success: true,
-      data: userRole
-    });
-  } catch (error) {
-    console.error('Get user role by id error:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
 const getAllUserRoles = async (req, res) => {
   try {
     const userRoles = await UserRole.findAll({
@@ -149,17 +98,7 @@ const getAllUserRoles = async (req, res) => {
         {
           model: Role,
           attributes: ['Id', 'RoleName'],
-          include: [
-            {
-              model: RoleCategory,
-              attributes: ['Id', 'CategoryName', 'Description']
-            },
-            {
-              model: Role,
-              as: 'ParentRole',
-              attributes: ['Id', 'RoleName']
-            }
-          ]
+          include: ['ParentRole']
         }
       ],
       order: [['CreatedAt', 'DESC']]
@@ -227,7 +166,6 @@ const deleteUserRole = async (req, res) => {
 module.exports = {
   assignRoleToUser,
   getUserCurrentRole,
-  getUserRoleById,
   getAllUserRoles,
   endUserRole,
   deleteUserRole

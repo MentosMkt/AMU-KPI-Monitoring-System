@@ -1,7 +1,7 @@
 // hooks/useRole.js
-import { useAuthStore } from '@/store/authStore'; // your auth state
+import { useSelector } from 'react-redux';
 
-// export const useRole = () => {
-//   const user = useAuthStore((state) => state.user);
-//   return user?.role || 'user'; // default to 'user' if not found
-// };
+export const useRole = () => {
+  const user = useSelector((state) => state.auth.user);
+  return user?.role || 'user';
+};

@@ -1,23 +1,30 @@
 import { Home, Bell, Moon, Sun, Layers, User, Settings, LogOut } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import useTheme from '../../Hooks/useTheme';
 
-import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from '../UI/DropDown'; // adjust path if needed
-import { DropdownMenuCheckboxItem } from './DropDown';
-
-const user = {
-  isAuthenticated: true,
-};
+import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from '../UI/DropDown';
+import { logout } from '../../Store/authSlice';
 
 const navLinks = ['About', 'Features', 'Benefits', 'Contact'];
 
 const Navbar = () => {
   const { isDark, toggleTheme } = useTheme();
-  const navigate = useNavigate();
 
-  return user.isAuthenticated ? (
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const isAuthenticated = Boolean(user);
+  const location = useLocation();
+  console.log(location);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/signin');
+  };
+
+  return isAuthenticated ? (
     <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 w-full">
-      {/* LEFT */}
       <div className="flex items-center gap-4">
         <button className="p-2 rounded-lg hover:bg-secondary">
           <Home className="w-5 h-5 text-muted-foreground" />
@@ -28,48 +35,43 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* RIGHT */}
       <div className="flex items-center gap-3">
-        {/* Notifications */}
         <button className="p-2 rounded-lg hover:bg-muted relative" onClick={() => navigate('/alerts')}>
           <Bell className="w-5 h-5 text-muted-foreground" />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full" />
         </button>
         <div className="h-8 w-px bg-border mx-1" />
-        {/* SIMPLE DROPDOWN */}
 
         <DropdownMenu
           trigger={
             <button className="flex items-center gap-3 rounded-lg p-1.5 hover:bg-muted">
               <div className="text-right">
-                <p className="text-sm font-semibold">Mr. Samson Alemu</p>
-                <p className="text-xs text-muted-foreground">System Administrator</p>
+                <p className="text-sm font-semibold">{user?.name || 'Signed In'}</p>
+                <p className="text-xs text-muted-foreground">{user?.role || 'User'}</p>
               </div>
-
-              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">SA</div>
+              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                {user?.name
+                  ?.split(' ')
+                  .map((segment) => segment[0])
+                  .join('') || 'U'}
+              </div>
             </button>
           }
         >
-          {/* ✅ PROFILE */}
           <DropdownMenuItem>
             <Link to="profile" className="flex items-center w-full">
               <User className="w-4 h-4 mr-2" />
               My Profile
             </Link>
           </DropdownMenuItem>
-
-          {/* ✅ SETTINGS */}
           <DropdownMenuItem>
             <Link to="configuration" className="flex items-center w-full">
               <Settings className="w-4 h-4 mr-2" />
               Settings
             </Link>
           </DropdownMenuItem>
-
           <DropdownMenuSeparator />
-
-          {/* ❗ LOGOUT stays button (not link) */}
-          <DropdownMenuItem onClick={() => console.log('logout')} className="text-red-500 flex">
+          <DropdownMenuItem onClick={handleLogout} className="text-red-500 flex">
             <LogOut className="w-4 h-4 mr-2" />
             Sign Out
           </DropdownMenuItem>
@@ -77,7 +79,7 @@ const Navbar = () => {
       </div>
     </header>
   ) : (
-    <nav className="sticky top-0 bg-background border-b">
+    <nav className="sticky top-0 z-50 bg-background border-b  border-border">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 h-16">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
@@ -95,11 +97,12 @@ const Navbar = () => {
         </div>
 
         <div className="flex gap-2">
-          <button className="border px-3 py-2 rounded">Learn More</button>
-
-          <button className="bg-primary text-white px-3 py-2 rounded">
-            <Link to="/signin">Sign In</Link>
-          </button>
+          <button className="border px-3 py-2 rounded cursor-pointer">Learn More</button>
+          {location.pathname !== '/signin' && (
+            <button className="bg-primary text-white px-3 py-2 rounded cursor-pointer" onClick={() => navigate('/signin')}>
+              Sign In
+            </button>
+          )}
         </div>
       </div>
     </nav>

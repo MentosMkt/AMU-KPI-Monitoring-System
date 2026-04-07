@@ -1,20 +1,54 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { useDispatch } from 'react-redux';
 
-import { Layers, Mail, Lock, ArrowRight } from "lucide-react";
-import kpiImage from "../../assets/images/kpi.jpeg";
+import { Mail, Lock, ArrowRight } from 'lucide-react';
+import kpiImage from '../../assets/images/kpi.jpeg';
+import { login } from '../../api/auth/authApi';
+import { setCredentials } from '../../Store/authSlice';
+import Navbar from '../../Components/UI/Navbar';
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { mutate, isLoading, error } = useMutation(login, {
+    onSuccess: (data) => {
+      const { user, token } = data;
+      dispatch(setCredentials({ user, token }));
+      if (remember && typeof window !== 'undefined') {
+        localStorage.setItem('auth', JSON.stringify({ user, token }));
+      } else if (typeof window !== 'undefined') {
+        localStorage.removeItem('auth');
+      }
+
+      const routeByRole = {
+        admin: '/admin',
+        'vice president': '/vice-president',
+        'faculty admin': '/faculty-admin',
+        'department chair': '/department-chair',
+        staff: '/staff',
+        'higher institution': '/higher-institution',
+        'strategic office': '/strategic-office',
+      };
+
+      const path = routeByRole[user?.role?.toLowerCase()] || '/';
+      navigate(path);
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: connect to auth
+    mutate({ email, password });
   };
 
   return (
     <div className="flex-1 bg-background flex flex-col">
+      <Navbar />
       {/* Sign-in card */}
       <div className="flex-1 flex items-center justify-center px-6 py-16 relative">
         {/* Background decoration */}
@@ -28,12 +62,8 @@ const SignIn = () => {
         <div className="w-full max-w-md animate-fade-in-up relative z-50">
           <div className="bg-card rounded-2xl border border-border/60 shadow-xl shadow-primary/5 p-8 sm:p-10 space-y-8">
             <div className="text-center space-y-2">
-              <h1 className="text-2xl font-bold text-foreground tracking-tight">
-                Sign In
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Access your KPI management dashboard
-              </p>
+              <h1 className="text-2xl font-bold text-foreground tracking-tight">Sign In</h1>
+              <p className="text-sm text-muted-foreground">Access your KPI management dashboard</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -85,38 +115,33 @@ const SignIn = () => {
                     onChange={(e) => setRemember(e.target.checked)}
                     className="w-4 h-4 rounded-sm border border-primary focus:ring-2 focus:ring-ring"
                   />
-                  <label
-                    htmlFor="remember"
-                    className="text-sm text-muted-foreground font-normal cursor-pointer"
-                  >
+                  <label htmlFor="remember" className="text-sm text-muted-foreground font-normal cursor-pointer">
                     Remember Me
                   </label>
                 </div>
-                <a
-                  href="#"
-                  className="text-sm text-primary hover:underline underline-offset-4"
-                >
+                <a href="#" className="text-sm text-primary hover:underline underline-offset-4">
                   Forgot password?
                 </a>
               </div>
 
+              {error ? (
+                <p className="text-sm text-red-500">{error.response?.data?.message || error.message || 'Login failed. Please try again.'}</p>
+              ) : null}
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full h-11 gap-2 text-sm font-medium rounded-md bg-primary text-primary-foreground shadow-lg shadow-primary/20 flex items-center justify-center hover:bg-primary/90 transition-colors"
+                disabled={isLoading}
+                className="w-full h-11 gap-2 text-sm font-medium rounded-md bg-primary text-primary-foreground shadow-lg shadow-primary/20 flex items-center justify-center hover:bg-primary/90 transition-colors disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Sign In
+                {isLoading ? 'Signing In...' : 'Sign In'}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
           </div>
 
           <p className="text-center text-sm text-muted-foreground mt-6">
-            Don't have an account?{" "}
-            <a
-              href="#"
-              className="text-primary font-medium hover:underline underline-offset-4"
-            >
+            Don't have an account?{' '}
+            <a href="#" className="text-primary font-medium hover:underline underline-offset-4">
               Contact your administrator
             </a>
           </p>

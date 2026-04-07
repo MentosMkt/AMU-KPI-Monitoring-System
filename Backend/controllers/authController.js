@@ -1,7 +1,6 @@
-const { User, UserRole, Role, RoleCategory } = require('../models');
+const { User, UserRole, Role } = require('../models');
 const generateToken = require('../utils/generateToken');
 const { validationResult } = require('express-validator');
-const { Op } = require('sequelize');
 
 const registerUser = async (req, res) => {
   try {
@@ -10,19 +9,11 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
     
-    const { FirstName, FatherName, GrandFatherName, Email, UserName, Phone, password, RoleCategoryId, RoleId } = req.body;
+    const { FirstName, FatherName, GrandFatherName, Email, UserName, Phone, password } = req.body;
     
     const userExists = await User.findOne({ where: { Email } });
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
-    }
-    
-    // Validate the role and category
-    const role = await Role.findByPk(RoleId, {
-      include: [{ model: RoleCategory, where: { Id: RoleCategoryId }, required: true }]
-    });
-    if (!role) {
-      return res.status(400).json({ message: 'Invalid role or role category' });
     }
     
     const user = await User.create({
@@ -35,19 +26,9 @@ const registerUser = async (req, res) => {
       password
     });
     
-    // Create UserRole association
-    await UserRole.create({
-      UserId: user.Id,
-      RoleId,
-      FromDate: new Date(),
-      ToDate: null,
-      CreatedBy: req.user?.Id || user.Id
-    });
-    
     res.status(201).json({
       success: true,
       user: user.getPublicProfile(),
-      role: role,
       token: generateToken(user.Id)
     });
     
@@ -63,7 +44,7 @@ const loginUser = async (req, res) => {
     
     const user = await User.findOne({ 
       where: { 
-        [Op.or]: [
+        [require('sequelize').Op.or]: [
           { UserName },
           { Email: UserName }
         ]
@@ -77,49 +58,10 @@ const loginUser = async (req, res) => {
     if (user.IsArchived) {
       return res.status(401).json({ message: 'Account is deactivated' });
     }
-
-    const userWithRole = await User.findByPk(user.Id, {
-      include: [{
-        model: UserRole,
-        where: {
-          IsArchived: false,
-          [Op.or]: [
-            { ToDate: null },
-            { ToDate: { [Op.gte]: new Date() } }
-          ]
-        },
-        required: false,
-        include: [{
-          model: Role,
-          where: { IsArchived: false },
-          required: false,
-          include: [
-            {
-              model: RoleCategory,
-              attributes: ['Id', 'CategoryName', 'Description']
-            },
-            {
-              model: Role,
-              as: 'ParentRole',
-              attributes: ['Id', 'RoleName']
-            }
-          ]
-        }]
-      }]
-    });
-
-    const currentUserRole = userWithRole.UserRoles?.[0];
-    const currentRole = currentUserRole?.Role;
-
-    if (!currentRole) {
-      return res.status(403).json({ message: 'User does not have an active assigned role' });
-    }
-
+    
     res.json({
       success: true,
       user: user.getPublicProfile(),
-      role: currentRole,
-      userRole: currentUserRole,
       token: generateToken(user.Id)
     });
     
@@ -139,11 +81,7 @@ const getCurrentUser = async (req, res) => {
         include: [{
           model: Role,
           where: { IsArchived: false },
-          required: false,
-          include: [{
-            model: RoleCategory,
-            attributes: ['Id', 'CategoryName', 'Description']
-          }]
+          required: false
         }]
       }]
     });
