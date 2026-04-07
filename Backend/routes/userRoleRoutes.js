@@ -2,6 +2,7 @@ const express = require('express');
 const {
   assignRoleToUser,
   getUserCurrentRole,
+  getUserRoleById,
   getAllUserRoles,
   endUserRole,
   deleteUserRole
@@ -21,6 +22,7 @@ router.route('/:id/end')
   .put(protect, admin, endUserRole);
 
 router.route('/:id')
+  .get(protect, admin, getUserRoleById)
   .delete(protect, admin, deleteUserRole);
 
 module.exports = router;

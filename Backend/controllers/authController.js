@@ -1,6 +1,7 @@
 const { User, UserRole, Role, RoleCategory } = require('../models');
 const generateToken = require('../utils/generateToken');
 const { validationResult } = require('express-validator');
+const { Op } = require('sequelize');
 
 const registerUser = async (req, res) => {
   try {
@@ -62,7 +63,7 @@ const loginUser = async (req, res) => {
     
     const user = await User.findOne({ 
       where: { 
-        [require('sequelize').Op.or]: [
+        [Op.or]: [
           { UserName },
           { Email: UserName }
         ]
@@ -76,10 +77,49 @@ const loginUser = async (req, res) => {
     if (user.IsArchived) {
       return res.status(401).json({ message: 'Account is deactivated' });
     }
-    
+
+    const userWithRole = await User.findByPk(user.Id, {
+      include: [{
+        model: UserRole,
+        where: {
+          IsArchived: false,
+          [Op.or]: [
+            { ToDate: null },
+            { ToDate: { [Op.gte]: new Date() } }
+          ]
+        },
+        required: false,
+        include: [{
+          model: Role,
+          where: { IsArchived: false },
+          required: false,
+          include: [
+            {
+              model: RoleCategory,
+              attributes: ['Id', 'CategoryName', 'Description']
+            },
+            {
+              model: Role,
+              as: 'ParentRole',
+              attributes: ['Id', 'RoleName']
+            }
+          ]
+        }]
+      }]
+    });
+
+    const currentUserRole = userWithRole.UserRoles?.[0];
+    const currentRole = currentUserRole?.Role;
+
+    if (!currentRole) {
+      return res.status(403).json({ message: 'User does not have an active assigned role' });
+    }
+
     res.json({
       success: true,
       user: user.getPublicProfile(),
+      role: currentRole,
+      userRole: currentUserRole,
       token: generateToken(user.Id)
     });
     
