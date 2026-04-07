@@ -1,4 +1,4 @@
-const { User, UserRole, Role } = require('../models');
+const { User, UserRole, Role, RoleCategory } = require('../models');
 const generateToken = require('../utils/generateToken');
 const { validationResult } = require('express-validator');
 
@@ -9,11 +9,19 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
     
-    const { FirstName, FatherName, GrandFatherName, Email, UserName, Phone, password } = req.body;
+    const { FirstName, FatherName, GrandFatherName, Email, UserName, Phone, password, RoleCategoryId, RoleId } = req.body;
     
     const userExists = await User.findOne({ where: { Email } });
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
+    }
+    
+    // Validate the role and category
+    const role = await Role.findByPk(RoleId, {
+      include: [{ model: RoleCategory, where: { Id: RoleCategoryId }, required: true }]
+    });
+    if (!role) {
+      return res.status(400).json({ message: 'Invalid role or role category' });
     }
     
     const user = await User.create({
@@ -26,9 +34,19 @@ const registerUser = async (req, res) => {
       password
     });
     
+    // Create UserRole association
+    await UserRole.create({
+      UserId: user.Id,
+      RoleId,
+      FromDate: new Date(),
+      ToDate: null,
+      CreatedBy: req.user?.Id || user.Id
+    });
+    
     res.status(201).json({
       success: true,
       user: user.getPublicProfile(),
+      role: role,
       token: generateToken(user.Id)
     });
     
@@ -81,7 +99,11 @@ const getCurrentUser = async (req, res) => {
         include: [{
           model: Role,
           where: { IsArchived: false },
-          required: false
+          required: false,
+          include: [{
+            model: RoleCategory,
+            attributes: ['Id', 'CategoryName', 'Description']
+          }]
         }]
       }]
     });
