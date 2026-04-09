@@ -8,7 +8,7 @@ const registerUser = async (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    
+    saGHD
     const { FirstName, FatherName, GrandFatherName, Email, UserName, Phone, password } = req.body;
     
     const userExists = await User.findOne({ where: { Email } });
