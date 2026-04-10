@@ -1,80 +1,114 @@
-import { Target, TrendingUp, Building2, Users, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import PerformanceDashboard from "../../Components/Dashboard/PerformanceDashboard";
 
-import { Card, CardContent, CardHeader, CardTitle } from '../../Components/UI/Card';
-import { Progress } from '../../Components/UI/progress';
 
-const stats = [
-  { icon: Target, label: 'University KPIs', value: '156', change: '+8.2%', up: true },
-  { icon: TrendingUp, label: 'Avg. Achievement', value: '78.5%', change: '+3.1%', up: true },
-  { icon: Building2, label: 'Active Faculties', value: '12', change: '0%', up: true },
-  { icon: Users, label: 'Total Staff', value: '2,450', change: '-1.2%', up: false },
-];
+const config = {
+  title: 'Strategic Performance Dashboard',
+  subtitle: 'University Executive Oversight • Institutional Effectiveness',
+  yearOptions: ['2023-2024', '2022-2023', '2021-2022'],
 
-const kpiProgress = [
-  { name: 'Research Output', current: 82 },
-  { name: 'Student Satisfaction', current: 91 },
-  { name: 'Community Service', current: 65 },
-  { name: 'Academic Quality', current: 74 },
-  { name: 'Infrastructure Dev.', current: 58 },
-];
+  stats: [
+    {
+      label: 'Achievement Rate',
+      value: '82.4%',
+      color: 'green',
+      progress: 82.4,
+      subtitle: '+2.4% from last quarter',
+    },
+    {
+      label: 'Total KPIs',
+      value: '148',
+      color: 'primary',
+      subtitle: 'Across all strategic cycles',
+    },
+    {
+      label: 'Achieved KPIs',
+      value: '92',
+      color: 'green',
+      progress: 62,
+    },
+    {
+      label: 'Delayed',
+      value: '14',
+      color: 'red',
+      progress: 14,
+    },
+  ],
+
+  subUnitLabel: 'Vice Presidents',
+
+  subUnits: [
+    {
+      name: 'Academic Vice President',
+      totalKpis: 54,
+      trend: 'Improving',
+      achieved: 39,
+      inProgress: 10,
+      delayed: 5,
+      color: 'primary',
+    },
+    {
+      name: 'Research Vice President',
+      totalKpis: 42,
+      trend: 'Improving',
+      achieved: 28,
+      inProgress: 10,
+      delayed: 4,
+      color: 'green',
+    },
+    {
+      name: 'Administrative Vice President',
+      totalKpis: 52,
+      trend: 'Declining',
+      achieved: 30,
+      inProgress: 14,
+      delayed: 8,
+      color: 'red',
+    },
+  ],
+
+  quarterlyData: [
+    { name: 'Academic VP', q1: 72, q2: 78, q3: 82, q4: 86 },
+    { name: 'Research VP', q1: 65, q2: 70, q3: 75, q4: 80 },
+    { name: 'Admin VP', q1: 68, q2: 72, q3: 70, q4: 74 },
+  ],
+
+  yearlyTrend: [
+    { year: '2019', score: 62 },
+    { year: '2020', score: 65 },
+    { year: '2021', score: 70 },
+    { year: '2022', score: 74 },
+    { year: '2023', score: 78 },
+    { year: '2024', score: 82 },
+  ],
+
+  statusDistribution: [
+    { name: 'Achieved', value: 42, color: 'hsl(142 71% 45%)' },
+    { name: 'In Progress', value: 28, color: 'hsl(45 93% 47%)' },
+    { name: 'Delayed', value: 15, color: 'hsl(0 84% 60%)' },
+    { name: 'Critical', value: 15, color: 'hsl(0 0% 45%)' },
+  ],
+
+  heatmap: [
+    { pillar: 'Academic VP', q1: 78, q2: 82, q3: 85, q4: 81 },
+    { pillar: 'Research VP', q1: 58, q2: 64, q3: 72, q4: 76 },
+    { pillar: 'Admin VP', q1: 82, q2: 85, q3: 81, q4: 78 },
+  ],
+
+  topPerformers: [
+    { name: 'Academic VP', unit: 'Faculty Management', score: 85 },
+    { name: 'Research VP', unit: 'Innovation & Research', score: 85 },
+    { name: 'Admin VP', unit: 'Operations', score: 78 },
+  ],
+
+  achievementGap: [
+    { name: 'Academic VP', target: 90, actual: 82 },
+    { name: 'Research VP', target: 85, actual: 76 },
+    { name: 'Admin VP', target: 88, actual: 74 },
+  ],
+};
 
 const StrategicDashboard = () => {
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">Strategic Office Dashboard</h1>
-        <p className="text-sm text-muted-foreground">University-wide KPI monitoring and strategic oversight</p>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-4 gap-4">
-        {stats.map((s) => {
-          const Icon = s.icon;
-
-          return (
-            <Card key={s.label}>
-              <CardContent className="p-5">
-                <div className="flex items-start justify-between">
-                  <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-primary" />
-                  </div>
-
-                  <span className={`flex items-center gap-1 text-xs font-medium ${s.up ? 'text-emerald-600' : 'text-destructive'}`}>
-                    {s.up ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-                    {s.change}
-                  </span>
-                </div>
-
-                <p className="mt-3 text-2xl font-bold text-foreground">{s.value}</p>
-                <p className="text-sm text-muted-foreground">{s.label}</p>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
-      {/* KPI Progress */}
-      <Card>
-        <CardHeader>
-          <CardTitle>University KPI Progress</CardTitle>
-        </CardHeader>
-
-        <CardContent className="space-y-4">
-          {kpiProgress.map((k) => (
-            <div key={k.name} className="space-y-1.5">
-              <div className="flex justify-between text-sm">
-                <span className="text-foreground font-medium">{k.name}</span>
-                <span className="text-muted-foreground">{k.current}%</span>
-              </div>
-
-              <Progress value={k.current} className="h-2" />
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-    </div>
-  );
+  return <PerformanceDashboard config={config} />;
 };
 
 export default StrategicDashboard;
