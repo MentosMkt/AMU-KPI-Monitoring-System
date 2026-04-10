@@ -18,6 +18,7 @@ const initialState = persistedAuth || {
   token: null,
   status: 'idle',
   error: null,
+  isAuthenticated: true,
 };
 
 const authSlice = createSlice({

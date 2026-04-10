@@ -14,7 +14,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const isAuthenticated = Boolean(user);
+  const isAuthenticated = true;
   const location = useLocation();
   
 
