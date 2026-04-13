@@ -20,6 +20,7 @@ import {
   Shield,
   Lock,
   Settings,
+  Settings2,
   Bell,
 } from 'lucide-react';
 
@@ -143,6 +144,7 @@ export const roleNavigation = {
         { icon: Target, label: 'University KPIs', path: 'university-kpis' },
         { icon: GitBranch, label: 'Strategic Plans', path: 'strategic-plans' },
         { icon: FileText, label: 'Reports', path: 'reports' },
+        { icon: Settings2, label: 'Registered Kpis', path: 'registered-kpis' },
       ],
     },
     {

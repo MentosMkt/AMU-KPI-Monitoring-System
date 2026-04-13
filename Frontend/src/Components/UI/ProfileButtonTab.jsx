@@ -12,7 +12,7 @@ export const Tabs = ({ defaultValue, children }) => {
 // Tabs List
 export const TabsList = ({ children, className = '', activeTab, setActiveTab }) => {
   return (
-    <div className={cn('inline-flex h-10 items-center justify-center rounded-md bg-muted p-1', className)}>
+    <div className={cn('inline-flex h-10 items-center  rounded-md bg-muted p-1', className)}>
       {React.Children.map(children, (child) => React.cloneElement(child, { activeTab, setActiveTab }))}
     </div>
   );

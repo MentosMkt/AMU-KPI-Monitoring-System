@@ -25,8 +25,10 @@ import Staff from './Pages/Staff/Staff';
 import Chair from './Pages/Chairs/Chair';
 import Faculity from './Pages/Faculity/Faculity';
 import VicePresident from './Pages/Vice President/VicePresident';
-import HigherInstitutions from './Pages/Higher Institutions/HigherInstitutions';
-import HigherInstitutionsDashboard from './Pages/Higher Institutions/HigherOfficeDashboard';
+import HigherInstitutions from './Pages/Higher_Institutions/HigherInstitutions';
+import HigherInstitutionsDashboard from './Pages/Higher_Institutions/HigherOfficeDashboard';
+import Reports from './Pages/Strategic/Reports';
+import RegisteredKpis from './Pages/Strategic/RegisteredKpis';
 
 function App() {
   return (
@@ -67,6 +69,8 @@ function App() {
             <Route path="/strategic-office" element={<Strategic />}>
               <Route index element={<Dashboard />} />
               <Route path="university-kpis" element={<UniversityKpis />} />
+              <Route path="reports" element={<Reports />} />
+              <Route path="registered-kpis" element={<RegisteredKpis />} />
             </Route>
 
             {/* Admin (if still needed separately) */}
