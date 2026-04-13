@@ -14,7 +14,7 @@ const seedData = async () => {
     // 1. CREATE ADMIN USER
     // ============================================
     console.log('📝 Creating Admin User...');
-    
+
     const adminUser = await User.create({
       FirstName: 'System',
       FatherName: 'Administrator',
@@ -25,9 +25,9 @@ const seedData = async () => {
       password: 'Admin@123',
       CreatedAt: new Date(),
       CreatedBy: null,
-      IsArchived: false
+      IsArchived: false,
     });
-    
+
     console.log('✅ Admin User Created:');
     console.log(`   ID: ${adminUser.Id}`);
     console.log(`   Name: ${adminUser.FirstName} ${adminUser.FatherName} ${adminUser.GrandFatherName}`);
@@ -39,15 +39,15 @@ const seedData = async () => {
     // 2. CREATE SYSTEM ADMINISTRATION ROLE CATEGORY
     // ============================================
     console.log('📁 Creating Role Category...');
-    
+
     const systemAdminCategory = await RoleCategory.create({
       CategoryName: 'System Administration',
       Description: 'System administrators with full system access and control',
       CreatedAt: new Date(),
       CreatedBy: adminUser.Id,
-      IsArchived: false
+      IsArchived: false,
     });
-    
+
     console.log('✅ Role Category Created:');
     console.log(`   ID: ${systemAdminCategory.Id}`);
     console.log(`   Name: ${systemAdminCategory.CategoryName}`);
@@ -57,7 +57,7 @@ const seedData = async () => {
     // 3. CREATE SYSTEM ADMINISTRATOR ROLE
     // ============================================
     console.log('👥 Creating System Administrator Role...');
-    
+
     const systemAdminRole = await Role.create({
       RoleCategoryId: systemAdminCategory.Id,
       RoleName: 'System Administrator',
@@ -66,9 +66,9 @@ const seedData = async () => {
       HasExtraMeasures: false,
       CreatedAt: new Date(),
       CreatedBy: adminUser.Id,
-      IsArchived: false
+      IsArchived: false,
     });
-    
+
     console.log('✅ Role Created:');
     console.log(`   ID: ${systemAdminRole.Id}`);
     console.log(`   Name: ${systemAdminRole.RoleName}`);
@@ -79,17 +79,17 @@ const seedData = async () => {
     // 4. ASSIGN ADMIN ROLE TO ADMIN USER
     // ============================================
     console.log('👑 Assigning System Administrator role to admin user...');
-    
+
     await UserRole.create({
       UserId: adminUser.Id,
       RoleId: systemAdminRole.Id,
       FromDate: new Date(),
-      ToDate: null,  // No end date - permanent role
+      ToDate: null, // No end date - permanent role
       CreatedAt: new Date(),
       CreatedBy: adminUser.Id,
-      IsArchived: false
+      IsArchived: false,
     });
-    
+
     console.log(`✅ ${adminUser.UserName} assigned as ${systemAdminRole.RoleName}`);
     console.log(`   From Date: ${new Date().toLocaleDateString()}`);
     console.log(`   To Date: Permanent\n`);
@@ -98,36 +98,40 @@ const seedData = async () => {
     // 5. VERIFICATION - QUERY ALL DATA
     // ============================================
     console.log('🔍 Verifying seeded data...\n');
-    
+
     // Count users
     const userCount = await User.count();
     console.log(`📊 Users: ${userCount}`);
-    
+
     // Count role categories
     const categoryCount = await RoleCategory.count();
     console.log(`📊 Role Categories: ${categoryCount}`);
-    
+
     // Count roles
     const roleCount = await Role.count();
     console.log(`📊 Roles: ${roleCount}`);
-    
+
     // Count user role assignments
     const assignmentCount = await UserRole.count();
     console.log(`📊 User Role Assignments: ${assignmentCount}`);
-    
+
     // Get admin user with role
     const adminWithRole = await User.findByPk(adminUser.Id, {
-      include: [{
-        model: UserRole,
-        where: { IsArchived: false },
-        required: false,
-        include: [{
-          model: Role,
-          include: ['RoleCategory']
-        }]
-      }]
+      include: [
+        {
+          model: UserRole,
+          where: { IsArchived: false },
+          required: false,
+          include: [
+            {
+              model: Role,
+              include: ['RoleCategory'],
+            },
+          ],
+        },
+      ],
     });
-    
+
     console.log('\n📋 Admin User Details:');
     console.log(`   Name: ${adminWithRole.FirstName} ${adminWithRole.FatherName} ${adminWithRole.GrandFatherName}`);
     console.log(`   Username: ${adminWithRole.UserName}`);
@@ -142,21 +146,20 @@ const seedData = async () => {
     console.log('\n=====================================');
     console.log('🎉 Seeding Completed Successfully!');
     console.log('=====================================\n');
-    
+
     console.log('📝 Default Login Credentials:');
     console.log('   Username: admin');
     console.log('   Email: admin@gmail.com');
     console.log('   Password: Admin@123');
     console.log('\n⚠️  IMPORTANT: Please change the admin password after first login!\n');
-    
+
     console.log('🏁 You can now test your API:');
     console.log('   1. npm run dev (start server)');
     console.log('   2. Test login: POST http://localhost:5000/api/auth/login');
     console.log('   3. Body: { "UserName": "admin", "password": "Admin@123" }');
     console.log('\n💡 Other role categories and roles can be added dynamically through the API!\n');
-    
+
     process.exit(0);
-    
   } catch (error) {
     console.error('❌ Seeding error:', error);
     console.error('Error details:', error.message);

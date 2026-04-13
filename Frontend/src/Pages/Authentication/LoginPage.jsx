@@ -1,63 +1,38 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
-import { useDispatch } from 'react-redux';
-
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 import kpiImage from '../../assets/images/kpi.jpeg';
-import { login } from '../../api/auth/authApi';
-import { setCredentials } from '../../Store/authSlice';
 import Navbar from '../../Components/UI/Navbar';
+import { useLogin } from '../../Hooks/Auth/useLogin';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { mutate, isLoading, error } = useMutation(login, {
-    onSuccess: (data) => {
-      const { user, token } = data;
-      dispatch(setCredentials({ user, token }));
-      if (remember && typeof window !== 'undefined') {
-        localStorage.setItem('auth', JSON.stringify({ user, token }));
-      } else if (typeof window !== 'undefined') {
-        localStorage.removeItem('auth');
-      }
-
-      const routeByRole = {
-        admin: '/admin',
-        'vice president': '/vice-president',
-        'faculty admin': '/faculty-admin',
-        'department chair': '/department-chair',
-        staff: '/staff',
-        'higher institution': '/higher-institution',
-        'strategic office': '/strategic-office',
-      };
-
-      const path = routeByRole[user?.role?.toLowerCase()] || '/';
-      navigate(path);
-    },
-  });
+  // Use the custom hook
+  const { mutate: loginMutate, isLoading, error } = useLogin();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate({ email, password });
+
+    // Call the custom hook's mutate function
+    loginMutate(
+      { UserName:email, password },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+        },
+      }
+    );
   };
 
   return (
     <div className="flex-1 bg-background flex flex-col">
       <Navbar />
-      {/* Sign-in card */}
       <div className="flex-1 flex items-center justify-center px-6 py-16 relative">
-        {/* Background decoration */}
-        <div
-          className="absolute inset-0 opacity-[0.08] bg-white z-0"
-          style={{
-            backgroundImage: `url(${kpiImage})`,
-          }}
-        />
+        <div className="absolute inset-0 opacity-[0.08] bg-white z-0" style={{ backgroundImage: `url(${kpiImage})` }} />
 
         <div className="w-full max-w-md animate-fade-in-up relative z-50">
           <div className="bg-card rounded-2xl border border-border/60 shadow-xl shadow-primary/5 p-8 sm:p-10 space-y-8">
@@ -127,6 +102,7 @@ const SignIn = () => {
               {error ? (
                 <p className="text-sm text-red-500">{error.response?.data?.message || error.message || 'Login failed. Please try again.'}</p>
               ) : null}
+
               {/* Submit Button */}
               <button
                 type="submit"

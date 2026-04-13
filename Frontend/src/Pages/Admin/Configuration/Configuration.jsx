@@ -35,10 +35,10 @@ const Configuration = () => {
   });
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <div className="flex-1 flex flex-col">
-        <main className="flex-1 p-6 overflow-y-auto">
-          <div className="max-w-5xl mx-auto space-y-8 animate-fade-in">
+    <div className="flex  bg-background overflow-y-auto">
+      <div className="flex-1 flex flex-col ">
+        <main className="flex-1 p-6 overflow-y-auto ">
+          <div className=" space-y-8 animate-fade-in">
             {/* Page Title */}
             <PageTitle />
 
